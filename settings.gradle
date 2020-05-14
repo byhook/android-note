@@ -1,3 +1,5 @@
 rootProject.name='android-note'
 include ':app'
 include ':note-anim'
+include ':note-base'
+include ':note-common'
