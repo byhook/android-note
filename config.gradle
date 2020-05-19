@@ -1,0 +1,26 @@
+ext {
+    android = [
+            compileSdkVersion: 29,
+            buildToolsVersion: "29.0.2",
+            applicationId    : "com.handy.android.note",
+            minSdkVersion    : 16,
+            targetSdkVersion : 29,
+            versionCode      : 1,
+            versionName      : "1.0.0"
+    ]
+
+    libVersion = [
+            appcompatVersion = "1.1.0",
+            junitVersion = "4.12",
+            extJunitVersion = "1.1.1",
+            espressoVersion = "3.2.0"
+    ]
+
+    dependencies = [
+            "appcompat"    : "androidx.appcompat:appcompat:${appcompatVersion}",
+            "junit"        : "junit:junit:${junitVersion}",
+            "ext.junit"    : "androidx.test.ext:junit:${extJunitVersion}",
+            "espresso-core": "androidx.test.espresso:espresso-core:${espressoVersion}"
+    ]
+
+}
