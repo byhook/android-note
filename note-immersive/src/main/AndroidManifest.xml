@@ -1,2 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.handy.note.immersive" />
+    package="com.handy.note.immersive">
+
+    <application>
+        <activity
+            android:name="com.handy.note.ui.ImmersiveNoteActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+    </application>
+</manifest>

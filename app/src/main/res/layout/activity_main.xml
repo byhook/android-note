@@ -10,6 +10,12 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="沉浸式状态栏适配"
+        android:onClick="onImmersiveClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="刘海屏适配"
         android:onClick="onNotchClick"/>
 

@@ -35,4 +35,5 @@ dependencies {
     implementation project(':note-base')
     implementation project(':note-anim')
     implementation project(':note-notch')
+    implementation project(':note-immersive')
 }
