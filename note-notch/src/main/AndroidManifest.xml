@@ -1,2 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.handy.note.notch" />
+    package="com.handy.note.notch">
+
+    <application>
+        <activity
+            android:name="com.handy.note.ui.NotchNoteActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+    </application>
+</manifest>
