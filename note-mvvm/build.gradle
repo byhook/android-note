@@ -1,1 +1,12 @@
 apply from: '../common.gradle'
+
+dependencies {
+
+    implementation rootProject.ext.dependencies["viewModel"]
+    implementation rootProject.ext.dependencies["viewModelSaveState"]
+    implementation rootProject.ext.dependencies["liveData"]
+    implementation rootProject.ext.dependencies["lifecycleRuntime"]
+    annotationProcessor rootProject.ext.dependencies["lifecycleCompiler"]
+    implementation rootProject.ext.dependencies["roomRuntime"]
+    annotationProcessor rootProject.ext.dependencies["roomCompiler"]
+}

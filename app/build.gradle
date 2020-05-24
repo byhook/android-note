@@ -36,4 +36,5 @@ dependencies {
     implementation project(':note-anim')
     implementation project(':note-notch')
     implementation project(':note-immersive')
+    implementation project(':note-mvvm')
 }

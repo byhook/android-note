@@ -19,4 +19,11 @@
         android:text="刘海屏适配"
         android:onClick="onNotchClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LifeCycle生命周期"
+        android:textAllCaps="false"
+        android:onClick="onLifeCycleClick"/>
+
 </LinearLayout>

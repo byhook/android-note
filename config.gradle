@@ -13,14 +13,23 @@ ext {
             appcompatVersion = "1.1.0",
             junitVersion = "4.12",
             extJunitVersion = "1.1.1",
-            espressoVersion = "3.2.0"
+            espressoVersion = "3.2.0",
+            lifecycleVersion = "2.2.0",
+            roomVersion = "2.2.3"
     ]
 
     dependencies = [
-            "appcompat"    : "androidx.appcompat:appcompat:${appcompatVersion}",
-            "junit"        : "junit:junit:${junitVersion}",
-            "ext.junit"    : "androidx.test.ext:junit:${extJunitVersion}",
-            "espresso-core": "androidx.test.espresso:espresso-core:${espressoVersion}"
+            "appcompat"         : "androidx.appcompat:appcompat:$appcompatVersion",
+            "junit"             : "junit:junit:$junitVersion",
+            "ext.junit"         : "androidx.test.ext:junit:$extJunitVersion",
+            "espresso-core"     : "androidx.test.espresso:espresso-core:$espressoVersion",
+            "viewModel"         : "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion",
+            "viewModelSaveState": "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion",
+            "liveData"          : "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion",
+            "lifecycleRuntime"  : "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion",
+            "lifecycleCompiler" : "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion",
+            "roomRuntime"       : "androidx.room:room-runtime:$roomVersion",
+            "roomCompiler"      : "androidx.room:room-compiler:$roomVersion"
     ]
 
 }

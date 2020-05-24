@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.handy.note.ui.ImmersiveNoteActivity;
 import com.handy.note.ui.NotchNoteActivity;
+import com.handy.note.ui.NoteLifecycleActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,4 +24,9 @@ public class MainActivity extends AppCompatActivity {
     public void onImmersiveClick(View view) {
         ImmersiveNoteActivity.intentStart(this);
     }
+
+    public void onLifeCycleClick(View view) {
+        NoteLifecycleActivity.intentStart(this);
+    }
+
 }
