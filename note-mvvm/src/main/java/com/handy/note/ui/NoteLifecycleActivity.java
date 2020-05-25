@@ -6,8 +6,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import com.handy.note.base.BaseNoteActivity;
+import com.handy.note.mvvm.R;
 
 /**
  * @anchor: handy
@@ -24,6 +26,7 @@ public class NoteLifecycleActivity extends BaseNoteActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        DataBindingUtil.setContentView(this,R.layout.activity_lifecycle_layer);
     }
+
 }

@@ -1,7 +1,7 @@
 apply from: '../common.gradle'
 
 dependencies {
-
+    implementation rootProject.ext.dependencies["recyclerView"]
     implementation rootProject.ext.dependencies["viewModel"]
     implementation rootProject.ext.dependencies["viewModelSaveState"]
     implementation rootProject.ext.dependencies["liveData"]
