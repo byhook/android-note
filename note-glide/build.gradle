@@ -1,0 +1,7 @@
+apply from: '../common.gradle'
+
+dependencies {
+    implementation rootProject.ext.dependencies["okhttp"]
+    implementation rootProject.ext.dependencies["glide"]
+    annotationProcessor rootProject.ext.dependencies["glideCompiler"]
+}

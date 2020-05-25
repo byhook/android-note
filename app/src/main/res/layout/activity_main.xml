@@ -26,4 +26,11 @@
         android:textAllCaps="false"
         android:onClick="onLifeCycleClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Glide库扩展"
+        android:textAllCaps="false"
+        android:onClick="onImageClick"/>
+
 </LinearLayout>

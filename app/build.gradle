@@ -37,4 +37,5 @@ dependencies {
     implementation project(':note-notch')
     implementation project(':note-immersive')
     implementation project(':note-mvvm')
+    implementation project(':note-glide')
 }

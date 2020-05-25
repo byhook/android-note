@@ -4,9 +4,9 @@ apply from: "config.gradle"
 buildscript {
     
     repositories {
+        mavenCentral()
         google()
         jcenter()
-        
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
@@ -19,9 +19,9 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
         jcenter()
-        
     }
 }
 

@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.handy.note.ui.ImmersiveNoteActivity;
 import com.handy.note.ui.NotchNoteActivity;
+import com.handy.note.ui.NoteGlideActivity;
 import com.handy.note.ui.NoteLifecycleActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,4 +30,7 @@ public class MainActivity extends AppCompatActivity {
         NoteLifecycleActivity.intentStart(this);
     }
 
+    public void onImageClick(View view) {
+        NoteGlideActivity.intentStart(this);
+    }
 }
