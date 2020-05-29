@@ -1,4 +1,4 @@
-package com.handy.note.ui;
+package com.handy.note.page;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
+import com.handy.note.base.BaseNoteFragment;
 import com.handy.note.mvvm.data.AnimalData;
 import com.handy.note.mvvm.database.AppDataBase;
 import com.handy.note.mvvm.databinding.FragmentAnimalLayerBinding;
@@ -24,7 +25,7 @@ import java.util.List;
  * @date: 2020-05-25
  * @description:
  */
-public class AnimalFragment extends Fragment {
+public class AnimalFragment extends BaseNoteFragment {
 
     private static final String TAG = "AnimalFragment";
 

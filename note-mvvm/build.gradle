@@ -1,12 +1,65 @@
-apply from: '../common.gradle'
+apply plugin: 'com.android.application'
+
+def modeApplication = true
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    dataBinding{
+        enabled = true
+    }
+    defaultConfig {
+        applicationId "com.handy.note.mvvm"
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            //清单配置
+            if (modeApplication.toBoolean()) {
+                manifest.srcFile 'src/debug/AndroidManifest.xml'
+                java.srcDirs = ['src/debug/java', 'src/main/java', 'src/main/aidl']
+            } else {
+                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                java.srcDirs = ['src/main/java', 'src/main/aidl']
+            }
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+}
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':note-base')
+
+    implementation rootProject.ext.dependencies["appcompat"]
     implementation rootProject.ext.dependencies["recyclerView"]
     implementation rootProject.ext.dependencies["viewModel"]
     implementation rootProject.ext.dependencies["viewModelSaveState"]
     implementation rootProject.ext.dependencies["liveData"]
     implementation rootProject.ext.dependencies["lifecycleRuntime"]
-    annotationProcessor rootProject.ext.dependencies["lifecycleCompiler"]
+    implementation rootProject.ext.dependencies["navigation"]
     implementation rootProject.ext.dependencies["roomRuntime"]
     annotationProcessor rootProject.ext.dependencies["roomCompiler"]
+    annotationProcessor rootProject.ext.dependencies["lifecycleCompiler"]
+
+    implementation rootProject.ext.dependencies["constraintlayout"]
+
+    testImplementation rootProject.ext.dependencies["junit"]
+    androidTestImplementation rootProject.ext.dependencies["ext.junit"]
+    androidTestImplementation rootProject.ext.dependencies["espresso-core"]
 }

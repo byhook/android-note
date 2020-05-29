@@ -1,19 +1,19 @@
-package com.handy.android.app;
+package com.handy.note.base;
 
-import com.handy.note.base.BaseApplication;
+import android.app.Application;
+
 import com.handy.note.core.AppCore;
 
 /**
  * @author: handy
- * @date: 2020-05-25
+ * @date: 2020-05-29
  * @description:
  */
-public class NoteApplication extends BaseApplication {
+public class BaseApplication extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
         AppCore.init(this);
     }
-
 }

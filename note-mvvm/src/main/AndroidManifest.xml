@@ -3,6 +3,7 @@
 
     <application>
         <activity android:name="com.handy.note.ui.NoteLifecycleActivity" />
+        <activity android:name="com.handy.note.ui.NoteMusicActivity" />
     </application>
 
 </manifest>
