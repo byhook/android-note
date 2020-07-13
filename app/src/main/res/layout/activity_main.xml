@@ -26,4 +26,11 @@
         android:textAllCaps="false"
         android:onClick="onImageClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="垂直滑动ViewPager"
+        android:textAllCaps="false"
+        android:onClick="onVerticalPagerClick"/>
+
 </LinearLayout>

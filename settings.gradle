@@ -1,3 +1,4 @@
+include ':note-widgets'
 rootProject.name='android-note'
 include ':app'
 include ':note-anim'
