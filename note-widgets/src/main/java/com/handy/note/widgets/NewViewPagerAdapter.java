@@ -49,6 +49,7 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
 //        Log.d(TAG, "onAttachedToRecyclerView ");
+        pagerAdapter.enableLoop(enableLoop);
         pagerAdapter.bindRecyclerView(recyclerView);
         if (mOnPageCenterListener != null) {
             mOnPageCenterListener.onPageCenter();

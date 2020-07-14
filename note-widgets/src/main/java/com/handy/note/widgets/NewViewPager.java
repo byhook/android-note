@@ -53,7 +53,8 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
     public void setAdapter(NewPagerAdapter adapter) {
         if (adapter != null) {
             if (newViewPagerAdapter == null || newViewPagerAdapter.getAdapter() != adapter) {
-                newViewPagerAdapter = new NewViewPagerAdapter(adapter, false);
+                newViewPagerAdapter = new NewViewPagerAdapter(adapter, true);
+                newViewPagerAdapter.enableLoop(true);
                 newViewPagerAdapter.setPageCenterListener(this);
             }
             viewPager.registerOnPageChangeCallback(adapter);

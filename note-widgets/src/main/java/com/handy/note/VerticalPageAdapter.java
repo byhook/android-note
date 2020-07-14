@@ -13,7 +13,10 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.handy.note.widgets.NewPagerAdapter;
 import com.handy.note.widgets.R;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author: handy
@@ -24,27 +27,31 @@ public class VerticalPageAdapter extends NewPagerAdapter {
 
     private static final String TAG = "VerticalPageAdapter";
 
-    private List<String> data;
+    private LoopQueue<TestData> loopData;
     private OnItemClickListener mOnItemClickListener;
 
-    public VerticalPageAdapter(List<String> data){
-        this.data = data;
+    private String currentData;
+
+    public VerticalPageAdapter(List<TestData> data) {
+        this.loopData = new LoopQueue<>(data);
+    }
+
+    public void insertNextData(TestData testData){
+        loopData.insertNextData(testData);
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG,"onCreateViewHolder " + viewType);
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.vertical_page_item_layer,parent,false);
+        Log.d(TAG, "onCreateViewHolder " + viewType);
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.vertical_page_item_layer, parent, false);
         return new RecycleViewHolder(rootView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder,position);
-        Log.d(TAG,"onBindViewHolder " + position);
-        RecycleViewHolder itemHolder = (RecycleViewHolder) holder;
-        itemHolder.bindData(position);
+        super.onBindViewHolder(holder, position);
+
     }
 
     @Override
@@ -58,19 +65,36 @@ public class VerticalPageAdapter extends NewPagerAdapter {
     }
 
     @Override
-    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position) {
-        super.onCurrentPageLoaded(holder, position);
+    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position, boolean reverse) {
+        super.onCurrentPageLoaded(holder, position, reverse);
+        TestData currentData;
+        if (holder == null) {
+            int realPosition = getRealPosition(position);
+            currentData = loopData.getData(0);
+        } else {
+            if (reverse) {
+                currentData = loopData.getPrevData();
+            } else {
+                currentData = loopData.getNextData();
+            }
+        }
+        Log.d(TAG, "onBindViewHolder " + position + " reverse=" + reverse);
+        if (holder != null) {
+            RecycleViewHolder itemHolder = (RecycleViewHolder) holder;
+            itemHolder.bindData(loopData.indexOf(currentData), currentData);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return loopData.size();
     }
 
     private class RecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView textView;
         private int index;
+        private TestData data;
 
         public RecycleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,20 +102,21 @@ public class VerticalPageAdapter extends NewPagerAdapter {
             textView.setOnClickListener(this);
         }
 
-        public void bindData(int index){
+        public void bindData(int index, TestData data) {
             this.index = index;
-            textView.setText("index=" + index  + " data=" + data.get(index));
+            this.data = data;
+            textView.setText("index=" + index + " data=" + data.index);
         }
 
         @Override
         public void onClick(View v) {
-            if(mOnItemClickListener!=null){
+            if (mOnItemClickListener != null) {
                 mOnItemClickListener.onItemClick(index);
             }
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 

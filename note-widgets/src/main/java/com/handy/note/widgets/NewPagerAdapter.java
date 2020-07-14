@@ -17,8 +17,16 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
 
     private RecyclerView recyclerView;
 
+    private boolean enableLoop;
+
+    private int currentPosition = -Integer.MAX_VALUE;
+
     public void bindRecyclerView(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
+    }
+
+    public void enableLoop(boolean enableLoop) {
+        this.enableLoop = enableLoop;
     }
 
     public abstract int getItemCount();
@@ -37,7 +45,7 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
         Log.d(TAG, "onPrevPageLoaded=" + holder + " position=" + position);
     }
 
-    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position) {
+    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position, boolean reverse) {
         Log.d(TAG, "onCurrentPageLoaded=" + holder + " position=" + position);
     }
 
@@ -56,12 +64,16 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
         return holder;
     }
 
-    private int getRealPosition(int position) {
+    protected int getRealPosition(int position) {
         //计算映射真实的下标
         int startIndex = position - Integer.MAX_VALUE / 2;
-        int realItemCount = getItemCount();
-        int leftIndex = startIndex % realItemCount;
-        return leftIndex >= 0 ? leftIndex : leftIndex + realItemCount;
+        if (enableLoop) {
+            return startIndex;
+        } else {
+            int realItemCount = getItemCount();
+            int leftIndex = startIndex % realItemCount;
+            return leftIndex >= 0 ? leftIndex : leftIndex + realItemCount;
+        }
     }
 
     @Override
@@ -74,7 +86,12 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
 
         onNextPageLoaded(nextHolder, getRealPosition(position + 1));
 
-        onCurrentPageLoaded(currentHolder, getRealPosition(position));
+        if (currentPosition == -Integer.MAX_VALUE) {
+            currentPosition = position;
+        }
+        onCurrentPageLoaded(currentHolder, getRealPosition(position), position <= currentPosition);
+
+        currentPosition = position;
 
         Log.d(TAG, "getTargetViewHolder" +
                 "\r\nprevHolder=" + prevHolder +

@@ -17,6 +17,7 @@ import com.handy.note.widgets.R;
 import com.handy.note.widgets.NewViewPager;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -44,20 +45,19 @@ public class VerticalPageActivity extends BaseNoteActivity implements NewViewPag
     }
 
     private void setupViews() {
-        List<String> data = new ArrayList<>();
+        List<TestData> data = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
-            data.add("" + i);
+            data.add(new TestData(i));
         }
-        VerticalPageAdapter verticalPageAdapter = new VerticalPageAdapter(data);
-        verticalPageAdapter.setOnItemClickListener(new VerticalPageAdapter.OnItemClickListener() {
+        VerticalPageAdapter adapter = new VerticalPageAdapter(data);
+        adapter.setOnItemClickListener(new VerticalPageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int index) {
-//                data.add(index + 1,"Insert: " + index);
-//                adapter.notifyDataSetChanged();
-//                viewPager.turnNextItem();
+                adapter.insertNextData(new TestData(5));
+                viewPager.turnNextItem();
             }
         });
-        viewPager.setAdapter(verticalPageAdapter);
+        viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(Integer.MAX_VALUE / 2, false);
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
