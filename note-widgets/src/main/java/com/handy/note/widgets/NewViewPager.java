@@ -19,6 +19,9 @@ import androidx.viewpager2.widget.ViewPager2;
 public class NewViewPager extends FrameLayout {
 
     private static final String TAG = "NewViewPager";
+
+    public static final int MIDDLE_POINT = Integer.MAX_VALUE / 2;
+
     private ViewPager2 viewPager;
 
     public NewViewPager(@NonNull Context context) {
@@ -30,12 +33,19 @@ public class NewViewPager extends FrameLayout {
         viewPager = new ViewPager2(context);
         viewPager.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
         addView(viewPager, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                Log.d(TAG,"onPageSelected " + position);
-            }
-        });
+
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        viewPager.registerOnPageChangeCallback(onPageChangeCallback);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        viewPager.unregisterOnPageChangeCallback(onPageChangeCallback);
     }
 
     public void setCurrentItem(int item) {
@@ -61,6 +71,20 @@ public class NewViewPager extends FrameLayout {
 
     public void unregisterOnPageChangeCallback(@NonNull ViewPager2.OnPageChangeCallback callback) {
         viewPager.unregisterOnPageChangeCallback(callback);
+    }
+
+    private ViewPager2.OnPageChangeCallback onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+        @Override
+        public void onPageSelected(int position) {
+            int index = position - MIDDLE_POINT;
+            Log.d(TAG,"onPageSelected " + index);
+        }
+    };
+
+    public interface OnViewPageLoadListener {
+
+        void onPageLoad();
+
     }
 
 }

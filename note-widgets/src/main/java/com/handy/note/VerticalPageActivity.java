@@ -49,14 +49,14 @@ public class VerticalPageActivity extends BaseNoteActivity implements NewViewPag
             data.add("" + i);
         }
         VerticalPageAdapter verticalPageAdapter = new VerticalPageAdapter(data);
-        NewViewPagerAdapter adapter = new NewViewPagerAdapter(verticalPageAdapter);
+        NewViewPagerAdapter adapter = new NewViewPagerAdapter(verticalPageAdapter,false);
         adapter.setPageCenterListener(this);
         verticalPageAdapter.setOnItemClickListener(new VerticalPageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int index) {
-                data.add(index + 1,"Insert: " + index);
-                adapter.notifyDataSetChanged();
-                viewPager.turnNextItem();
+//                data.add(index + 1,"Insert: " + index);
+//                adapter.notifyDataSetChanged();
+//                viewPager.turnNextItem();
             }
         });
         viewPager.setAdapter(adapter);

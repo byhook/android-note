@@ -23,8 +23,11 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
 
     private int shadowIndex = Integer.MAX_VALUE / 2;
 
-    public NewViewPagerAdapter(RecyclerView.Adapter adapter) {
-        pagerAdapter = adapter;
+    private boolean changed;
+
+    public NewViewPagerAdapter(RecyclerView.Adapter adapter, boolean changed) {
+        this.pagerAdapter = adapter;
+        this.changed = changed;
     }
 
     @Override
@@ -62,20 +65,17 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
         if (pagerAdapter != null) {
             int realItemCount = pagerAdapter.getItemCount();
             int tempIndex = position - shadowIndex;
-            int index = 0;
-            if (tempIndex < 0) {
-                //逆向滑动
+            if (changed) {
+                //逆向滑动为负数 正向滑动为正数
+                pagerAdapter.onBindViewHolder(holder, tempIndex);
+                Log.d(TAG, "onBindViewHolder realItemCount " + tempIndex);
+            } else {
                 int leftIndex = tempIndex % realItemCount;
-                index = realItemCount + leftIndex;
-                Log.d(TAG, "onBindViewHolder《= tempIndex= " + tempIndex + " index=" + index + " realItemCount=" + realItemCount);
-            } else if (tempIndex > 0) {
-                //顺向滑动
-                int leftIndex = tempIndex % realItemCount;
-                index = leftIndex;
-                Log.d(TAG, "onBindViewHolder =》tempIndex= " + tempIndex + " index=" + index + " realItemCount=" + realItemCount);
+                int realIndex = leftIndex >= 0 ? leftIndex : leftIndex + realItemCount;
+                Log.d(TAG, "onBindViewHolder realItemCount " + tempIndex);
+                pagerAdapter.onBindViewHolder(holder, realIndex);
             }
-            Log.d(TAG, "onBindViewHolder realItemCount " + realItemCount);
-            pagerAdapter.onBindViewHolder(holder, index);
+
         } else {
             Log.d(TAG, "onBindViewHolder " + position);
         }
