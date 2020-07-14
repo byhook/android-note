@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.handy.note.helper.PageAction;
 import com.handy.note.widgets.NewPagerAdapter;
 import com.handy.note.widgets.R;
 
@@ -65,20 +66,19 @@ public class VerticalPageAdapter extends NewPagerAdapter {
     }
 
     @Override
-    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position, boolean reverse) {
-        super.onCurrentPageLoaded(holder, position, reverse);
+    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position, @PageAction int action) {
+        super.onCurrentPageLoaded(holder, position, action);
         TestData currentData;
-        if (holder == null) {
-            int realPosition = getRealPosition(position);
-            currentData = loopData.getData(0);
+        if (action == PageAction.ACTION_INIT_OR_SET) {
+            currentData = loopData.getData(position);
         } else {
-            if (reverse) {
+            if (action == PageAction.ACTION_REVERSE) {
                 currentData = loopData.getPrevData();
             } else {
                 currentData = loopData.getNextData();
             }
         }
-        Log.d(TAG, "onBindViewHolder " + position + " reverse=" + reverse);
+        Log.d(TAG, "onBindViewHolder " + position + " reverse=" + action);
         if (holder != null) {
             RecycleViewHolder itemHolder = (RecycleViewHolder) holder;
             itemHolder.bindData(loopData.indexOf(currentData), currentData);

@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.handy.note.helper.PageAction;
+
 /**
  * @author: handy
  * @date: 2020-07-14
@@ -20,6 +22,10 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
     private boolean enableLoop;
 
     private int currentPosition = -Integer.MAX_VALUE;
+
+    private RecyclerView.ViewHolder prevHolder;
+    private RecyclerView.ViewHolder nextHolder;
+    private RecyclerView.ViewHolder currentHolder;
 
     public void bindRecyclerView(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
@@ -38,14 +44,26 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
     public abstract RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        Log.d(TAG, "onBindViewHolder=" + holder + " position=" + position);
+        if (prevHolder == null && (currentPosition - 1) == position) {
+            prevHolder = holder;
+            onPrevPageLoaded(prevHolder, getRealPosition(position));
+        }
+        if (nextHolder == null && (currentPosition + 1) == position) {
+            nextHolder = holder;
+            onNextPageLoaded(prevHolder, getRealPosition(position));
+        }
+        if (currentHolder == null && currentPosition == position) {
+            currentHolder = holder;
+            onCurrentPageLoaded(currentHolder, getRealPosition(position), PageAction.ACTION_INIT_OR_SET);
+        }
     }
 
     public void onPrevPageLoaded(RecyclerView.ViewHolder holder, int position) {
         Log.d(TAG, "onPrevPageLoaded=" + holder + " position=" + position);
     }
 
-    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position, boolean reverse) {
+    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position, @PageAction int action) {
         Log.d(TAG, "onCurrentPageLoaded=" + holder + " position=" + position);
     }
 
@@ -76,37 +94,47 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
         }
     }
 
+    /**
+     * 第一次的时候
+     * onPageSelected会比onBindViewHolder先调用
+     * 所以第一次的时候holder为空
+     *
+     * @param position
+     */
     @Override
     public void onPageSelected(int position) {
-        RecyclerView.ViewHolder prevHolder = getTargetViewHolder(position - 1);
-        RecyclerView.ViewHolder nextHolder = getTargetViewHolder(position + 1);
-        RecyclerView.ViewHolder currentHolder = getTargetViewHolder(position);
-
-        onPrevPageLoaded(prevHolder, getRealPosition(position - 1));
-
-        onNextPageLoaded(nextHolder, getRealPosition(position + 1));
-
         if (currentPosition == -Integer.MAX_VALUE) {
             currentPosition = position;
+            Log.d(TAG, "onPageSelected init " + position + " select" + Integer.MAX_VALUE / 2);
+        } else {
+            currentHolder = getTargetViewHolder(position);
+            if (currentHolder != null) {
+                prevHolder = getTargetViewHolder(position - 1);
+                nextHolder = getTargetViewHolder(position + 1);
+
+                onPrevPageLoaded(prevHolder, getRealPosition(position - 1));
+                onNextPageLoaded(nextHolder, getRealPosition(position + 1));
+
+                int action = position < currentPosition ? PageAction.ACTION_REVERSE : PageAction.ACTION_FORWARD;
+                onCurrentPageLoaded(currentHolder, getRealPosition(position), action);
+            }
+            Log.d(TAG, "onPageSelected" +
+                    "\r\nposition=" + position +
+                    "\r\nprevHolder=" + prevHolder +
+                    "\r\nnextHolder=" + nextHolder +
+                    "\r\ncurrentHolder=" + currentHolder);
         }
-        onCurrentPageLoaded(currentHolder, getRealPosition(position), position <= currentPosition);
-
         currentPosition = position;
-
-        Log.d(TAG, "getTargetViewHolder" +
-                "\r\nprevHolder=" + prevHolder +
-                "\r\nnextHolder=" + nextHolder +
-                "\r\ncurrentHolder=" + currentHolder);
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//        Log.d(TAG, "onPageScrolled position=" + position);
+        Log.d(TAG, "onPageScrolled position=" + position + " currentHolder=" + currentHolder);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-//        Log.d(TAG, "onPageScrollStateChanged state=" + state);
+        Log.d(TAG, "onPageScrollStateChanged state=" + state);
     }
 
 }

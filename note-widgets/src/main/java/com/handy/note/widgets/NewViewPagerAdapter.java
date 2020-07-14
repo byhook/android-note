@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import java.util.List;
+
 /**
  * @author: handy
  * @date: 2020-07-13
@@ -35,6 +37,10 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
 
     public void enableLoop(boolean enableLoop){
         this.enableLoop = enableLoop;
+    }
+
+    public boolean isEnableLoop(){
+        return enableLoop;
     }
 
     public NewPagerAdapter getAdapter() {
@@ -86,7 +92,7 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
             int tempIndex = position - shadowIndex;
             if (changed) {
                 //逆向滑动为负数 正向滑动为正数
-                pagerAdapter.onBindViewHolder(holder, tempIndex);
+                pagerAdapter.onBindViewHolder(holder, position);
                 Log.d(TAG, "onBindViewHolder realItemCount " + tempIndex);
             } else {
                 int leftIndex = tempIndex % realItemCount;
@@ -108,6 +114,10 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return Integer.MAX_VALUE;
+    }
+
+    public int getRealItemCount(){
+        return pagerAdapter.getItemCount();
     }
 
     public void setPageCenterListener(OnPageCenterListener onPageCenterListener) {

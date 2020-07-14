@@ -55,10 +55,11 @@ public class VerticalPageActivity extends BaseNoteActivity implements NewViewPag
             public void onItemClick(int index) {
                 adapter.insertNextData(new TestData(5));
                 viewPager.turnNextItem();
+//                viewPager.setCurrentItem(3,false);
             }
         });
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(Integer.MAX_VALUE / 2, false);
+
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

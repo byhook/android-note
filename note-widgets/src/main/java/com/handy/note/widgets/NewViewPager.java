@@ -38,16 +38,23 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
     }
 
     public void setCurrentItem(int item) {
-        viewPager.setCurrentItem(item);
+        setCurrentItem(item,false);
     }
 
     public void setCurrentItem(int item, boolean smoothScroll) {
-        viewPager.setCurrentItem(item, smoothScroll);
+        if (newViewPagerAdapter != null) {
+            if (newViewPagerAdapter.isEnableLoop()) {
+                int realItem = MIDDLE_POINT + item % newViewPagerAdapter.getRealItemCount();
+                viewPager.setCurrentItem(realItem, smoothScroll);
+            } else {
+                viewPager.setCurrentItem(item, smoothScroll);
+            }
+        }
     }
 
     public void turnNextItem() {
-        int currentItem = viewPager.getCurrentItem();
-        viewPager.setCurrentItem(currentItem + 1);
+        int currentItem = viewPager.getCurrentItem() - MIDDLE_POINT;
+        setCurrentItem(currentItem + 1);
     }
 
     public void setAdapter(NewPagerAdapter adapter) {
@@ -69,7 +76,6 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
     public void unregisterOnPageChangeCallback(@NonNull ViewPager2.OnPageChangeCallback callback) {
         viewPager.unregisterOnPageChangeCallback(callback);
     }
-
 
     @Override
     public void onPageCenter() {
