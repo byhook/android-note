@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 
 /**
  * @author: handy
@@ -17,7 +18,7 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
 
     private static final String TAG = "NewViewPagerAdapter";
 
-    private RecyclerView.Adapter pagerAdapter;
+    private NewPagerAdapter pagerAdapter;
 
     private OnPageCenterListener mOnPageCenterListener;
 
@@ -25,14 +26,30 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
 
     private boolean changed;
 
-    public NewViewPagerAdapter(RecyclerView.Adapter adapter, boolean changed) {
+    private boolean enableLoop;
+
+    public NewViewPagerAdapter(NewPagerAdapter adapter, boolean changed) {
         this.pagerAdapter = adapter;
         this.changed = changed;
+    }
+
+    public void enableLoop(boolean enableLoop){
+        this.enableLoop = enableLoop;
+    }
+
+    public NewPagerAdapter getAdapter() {
+        return pagerAdapter;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
 //        Log.d(TAG, "onAttachedToRecyclerView ");
+        pagerAdapter.bindRecyclerView(recyclerView);
         if (mOnPageCenterListener != null) {
             mOnPageCenterListener.onPageCenter();
         }
@@ -56,12 +73,13 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        Log.d(TAG, "onCreateViewHolder " + viewType);
+        Log.d(TAG, "onXCreateViewHolder " + viewType);
         return pagerAdapter.onCreateViewHolder(parent, viewType);
     }
 
     @Override
     public final void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder ==== " + holder);
         if (pagerAdapter != null) {
             int realItemCount = pagerAdapter.getItemCount();
             int tempIndex = position - shadowIndex;
@@ -75,7 +93,6 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
                 Log.d(TAG, "onBindViewHolder realItemCount " + tempIndex);
                 pagerAdapter.onBindViewHolder(holder, realIndex);
             }
-
         } else {
             Log.d(TAG, "onBindViewHolder " + position);
         }

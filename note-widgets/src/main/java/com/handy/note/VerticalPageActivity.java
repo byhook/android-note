@@ -27,7 +27,7 @@ import java.util.List;
 public class VerticalPageActivity extends BaseNoteActivity implements NewViewPagerAdapter.OnPageCenterListener {
 
     private static final String TAG = "VerticalPageActivity";
-    //    private NewViewPager viewPager;
+
     private NewViewPager viewPager;
 
     public static void intentStart(@NonNull Context context) {
@@ -49,8 +49,6 @@ public class VerticalPageActivity extends BaseNoteActivity implements NewViewPag
             data.add("" + i);
         }
         VerticalPageAdapter verticalPageAdapter = new VerticalPageAdapter(data);
-        NewViewPagerAdapter adapter = new NewViewPagerAdapter(verticalPageAdapter,false);
-        adapter.setPageCenterListener(this);
         verticalPageAdapter.setOnItemClickListener(new VerticalPageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int index) {
@@ -59,7 +57,7 @@ public class VerticalPageActivity extends BaseNoteActivity implements NewViewPag
 //                viewPager.turnNextItem();
             }
         });
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(verticalPageAdapter);
         viewPager.setCurrentItem(Integer.MAX_VALUE / 2, false);
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

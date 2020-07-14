@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.handy.note.widgets.NewPagerAdapter;
 import com.handy.note.widgets.R;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  * @date: 2020-07-13
  * @description:
  */
-public class VerticalPageAdapter extends RecyclerView.Adapter {
+public class VerticalPageAdapter extends NewPagerAdapter {
 
     private static final String TAG = "VerticalPageAdapter";
 
@@ -40,9 +41,25 @@ public class VerticalPageAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder,position);
         Log.d(TAG,"onBindViewHolder " + position);
         RecycleViewHolder itemHolder = (RecycleViewHolder) holder;
         itemHolder.bindData(position);
+    }
+
+    @Override
+    public void onPrevPageLoaded(RecyclerView.ViewHolder holder, int position) {
+        super.onPrevPageLoaded(holder, position);
+    }
+
+    @Override
+    public void onNextPageLoaded(RecyclerView.ViewHolder holder, int position) {
+        super.onNextPageLoaded(holder, position);
+    }
+
+    @Override
+    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position) {
+        super.onCurrentPageLoaded(holder, position);
     }
 
     @Override
