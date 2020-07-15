@@ -3,20 +3,14 @@ package com.handy.note;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.handy.note.base.BaseNoteActivity;
-import com.handy.note.widgets.NewViewPagerAdapter;
 import com.handy.note.widgets.R;
 import com.handy.note.widgets.NewViewPager;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -26,7 +20,7 @@ import java.util.Random;
  * @date: 2020-07-13
  * @description:
  */
-public class VerticalPageActivity extends BaseNoteActivity implements NewViewPagerAdapter.OnPageCenterListener {
+public class VerticalPageActivity extends BaseNoteActivity{
 
     private static final String TAG = "VerticalPageActivity";
 
@@ -47,7 +41,7 @@ public class VerticalPageActivity extends BaseNoteActivity implements NewViewPag
 
     private void setupViews() {
         List<TestData> data = new LinkedList<>();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 20; i++) {
             data.add(new TestData(i));
         }
         Random random = new Random(System.currentTimeMillis());
@@ -55,35 +49,13 @@ public class VerticalPageActivity extends BaseNoteActivity implements NewViewPag
         adapter.setOnItemClickListener(new VerticalPageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int index) {
+                //viewPager.setCurrentItem(8);
                 if(adapter.insertNextData(new TestData(8 + random.nextInt(7)))){
                     viewPager.turnNextItem();
                 }
             }
         });
         viewPager.setAdapter(adapter);
-
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.d(TAG, "onPageScrolled " + position);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Log.d(TAG, "onPageSelected " + position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                super.onPageScrollStateChanged(state);
-            }
-        });
-    }
-
-    @Override
-    public void onPageCenter() {
-        Log.d(TAG, "center");
-        //viewPager.setCurrentItem(Integer.MAX_VALUE/2,false);
     }
 
 }

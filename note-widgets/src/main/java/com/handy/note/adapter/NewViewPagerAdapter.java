@@ -1,4 +1,4 @@
-package com.handy.note.widgets;
+package com.handy.note.adapter;
 
 import android.util.Log;
 import android.view.ViewGroup;
@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * @date: 2020-07-13
  * @description:
  */
-public class NewViewPagerAdapter extends RecyclerView.Adapter {
+public class NewViewPagerAdapter extends RecyclerView.Adapter implements IPagerAdapter {
 
     private static final String TAG = "NewViewPagerAdapter";
 
-    private NewPagerAdapter pagerAdapter;
+    private CyclePagerAdapter pagerAdapter;
 
     private OnPageCenterListener mOnPageCenterListener;
 
@@ -25,20 +25,20 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
 
     private boolean enableLoop;
 
-    public NewViewPagerAdapter(NewPagerAdapter adapter, boolean changed) {
+    public NewViewPagerAdapter(CyclePagerAdapter adapter, boolean changed) {
         this.pagerAdapter = adapter;
         this.changed = changed;
     }
 
-    public void enableLoop(boolean enableLoop){
+    public void enableLoop(boolean enableLoop) {
         this.enableLoop = enableLoop;
     }
 
-    public boolean isEnableLoop(){
+    public boolean isEnableLoop() {
         return enableLoop;
     }
 
-    public NewPagerAdapter getAdapter() {
+    public CyclePagerAdapter getAdapter() {
         return pagerAdapter;
     }
 
@@ -108,10 +108,10 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return Integer.MAX_VALUE;
+        return enableLoop ? Integer.MAX_VALUE : getRealItemCount();
     }
 
-    public int getRealItemCount(){
+    public int getRealItemCount() {
         return pagerAdapter.getItemCount();
     }
 

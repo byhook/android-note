@@ -9,8 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.handy.note.adapter.CyclePagerAdapter;
 import com.handy.note.helper.PageAction;
-import com.handy.note.widgets.NewPagerAdapter;
+import com.handy.note.adapter.NormalPagerAdapter;
 import com.handy.note.widgets.R;
 
 import java.util.List;
@@ -20,13 +21,11 @@ import java.util.List;
  * @date: 2020-07-13
  * @description:
  */
-public class VerticalPageAdapter extends NewPagerAdapter<TestData> {
+public class VerticalPageAdapter extends CyclePagerAdapter<TestData> {
 
     private static final String TAG = "VerticalPageAdapter";
 
     private OnItemClickListener mOnItemClickListener;
-
-    private String currentData;
 
     public VerticalPageAdapter(List<TestData> data) {
         super(data);
@@ -47,35 +46,23 @@ public class VerticalPageAdapter extends NewPagerAdapter<TestData> {
     }
 
     @Override
-    public void onPrevPageLoaded(RecyclerView.ViewHolder holder, int position) {
-        super.onPrevPageLoaded(holder, position);
+    public void onPrevPageLoaded(RecyclerView.ViewHolder holder, TestData data) {
+        super.onPrevPageLoaded(holder, data);
     }
 
     @Override
-    public void onNextPageLoaded(RecyclerView.ViewHolder holder, int position) {
-        super.onNextPageLoaded(holder, position);
+    public void onNextPageLoaded(RecyclerView.ViewHolder holder, TestData data) {
+        super.onNextPageLoaded(holder, data);
     }
 
     @Override
-    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position, @PageAction int action) {
-        super.onCurrentPageLoaded(holder, position, action);
-        TestData currentData;
-        if (action == PageAction.ACTION_INIT_OR_SET) {
-            currentData = loopQueue.getCurrentData();
-        } else {
-            if (action == PageAction.ACTION_REVERSE) {
-                currentData = loopQueue.getPrevData();
-            } else {
-                currentData = loopQueue.getNextData();
-            }
-        }
-
+    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, TestData data) {
+        super.onCurrentPageLoaded(holder, data);
         if (holder != null) {
             RecycleViewHolder itemHolder = (RecycleViewHolder) holder;
-            itemHolder.bindData(loopQueue.indexOf(currentData), currentData);
+            itemHolder.bindData(0, data);
         }
-
-        Log.d(TAG, "VerticalHolder === " + position + " reverse=" + action + "\r\n data=" + loopQueue.toString());
+        Log.d(TAG, "VerticalHolder === " + holder + "\r\n data=" + loopQueue.toString());
     }
 
     @Override

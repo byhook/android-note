@@ -7,8 +7,12 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.handy.note.adapter.CyclePagerAdapter;
+import com.handy.note.adapter.IPagerAdapter;
+import com.handy.note.adapter.NormalPagerAdapter;
+import com.handy.note.adapter.NewViewPagerAdapter;
 
 /**
  * @author: handy
@@ -24,6 +28,8 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
     private ViewPager2 viewPager;
 
     private NewViewPagerAdapter newViewPagerAdapter;
+
+    private boolean enableLoop = true;
 
     public NewViewPager(@NonNull Context context) {
         this(context, null);
@@ -62,11 +68,11 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
         setCurrentItem(currentItem + 1,smoothScroll);
     }
 
-    public void setAdapter(NewPagerAdapter adapter) {
+    public void setAdapter(CyclePagerAdapter adapter) {
         if (adapter != null) {
             if (newViewPagerAdapter == null || newViewPagerAdapter.getAdapter() != adapter) {
                 newViewPagerAdapter = new NewViewPagerAdapter(adapter, true);
-                newViewPagerAdapter.enableLoop(true);
+                newViewPagerAdapter.enableLoop(enableLoop);
                 newViewPagerAdapter.setPageCenterListener(this);
             }
             viewPager.registerOnPageChangeCallback(adapter);
@@ -84,7 +90,7 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
 
     @Override
     public void onPageCenter() {
-        viewPager.setCurrentItem(MIDDLE_POINT, false);
+        setCurrentItem(0);
     }
 
 }

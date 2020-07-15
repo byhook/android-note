@@ -1,4 +1,4 @@
-package com.handy.note.widgets;
+package com.handy.note.adapter;
 
 import android.util.Log;
 import android.view.ViewGroup;
@@ -16,7 +16,7 @@ import java.util.List;
  * @date: 2020-07-14
  * @description:
  */
-public abstract class NewPagerAdapter<T> extends ViewPager2.OnPageChangeCallback {
+public abstract class CyclePagerAdapter<T> extends ViewPager2.OnPageChangeCallback implements IPagerAdapter {
 
     private static final String TAG = "NewPagerAdapter";
 
@@ -34,7 +34,7 @@ public abstract class NewPagerAdapter<T> extends ViewPager2.OnPageChangeCallback
 
     private Integer loadAction;
 
-    public NewPagerAdapter(List<T> data) {
+    public CyclePagerAdapter(List<T> data) {
         this.loopQueue = new LoopQueue<>(data);
     }
 
@@ -48,14 +48,15 @@ public abstract class NewPagerAdapter<T> extends ViewPager2.OnPageChangeCallback
 
     /**
      * 插队逻辑
+     *
      * @param data
      * @return
      */
-    public boolean insertNextData(T data){
+    public boolean insertNextData(T data) {
         return loopQueue.insertNextData(data);
     }
 
-    public boolean appendData(List<T> data){
+    public boolean appendData(List<T> data) {
         return loopQueue.appendData(data);
     }
 
@@ -71,33 +72,33 @@ public abstract class NewPagerAdapter<T> extends ViewPager2.OnPageChangeCallback
         Log.d(TAG, "onBindViewHolder=" + holder + " position=" + position);
         if (prevHolder == null && (currentPosition - 1) == position) {
             prevHolder = holder;
-            onPrevPageLoaded(prevHolder, getRealPosition(position));
+            onPrevPageLoaded(prevHolder, null);
         }
         if (nextHolder == null && (currentPosition + 1) == position) {
             nextHolder = holder;
-            onNextPageLoaded(prevHolder, getRealPosition(position));
+            onNextPageLoaded(prevHolder, null);
         }
         if (currentHolder == null && currentPosition == position) {
             currentHolder = holder;
-            if(loadAction == null){
+            if (loadAction == null) {
                 loadAction = PageAction.ACTION_INIT_OR_SET;
             } else {
                 loadAction = PageAction.ACTION_FORWARD;
             }
-            onCurrentPageLoaded(currentHolder, getRealPosition(position), loadAction);
+            onCurrentPageLoaded(currentHolder, getTargetData(loadAction));
         }
     }
 
-    public void onPrevPageLoaded(RecyclerView.ViewHolder holder, int position) {
-        Log.d(TAG, "onPrevPageLoaded=" + holder + " position=" + position);
+    public void onPrevPageLoaded(RecyclerView.ViewHolder holder, T data) {
+        Log.d(TAG, "onPrevPageLoaded=" + holder + " position=" + data);
     }
 
-    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position, @PageAction int action) {
-        Log.d(TAG, "onCurrentPageLoaded=" + holder + " position=" + position);
+    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, T data) {
+        Log.d(TAG, "onCurrentPageLoaded=" + holder + " position=" + data);
     }
 
-    public void onNextPageLoaded(RecyclerView.ViewHolder holder, int position) {
-        Log.d(TAG, "onNextPageLoaded=" + holder + " position=" + position);
+    public void onNextPageLoaded(RecyclerView.ViewHolder holder, T data) {
+        Log.d(TAG, "onNextPageLoaded=" + holder + " position=" + data);
     }
 
     private RecyclerView.ViewHolder getTargetViewHolder(int position) {
@@ -123,6 +124,20 @@ public abstract class NewPagerAdapter<T> extends ViewPager2.OnPageChangeCallback
         }
     }
 
+    private T getTargetData(int action) {
+        T currentData = null;
+        if (action == PageAction.ACTION_INIT_OR_SET) {
+            currentData = loopQueue.getCurrentData();
+        } else {
+            if (action == PageAction.ACTION_REVERSE) {
+                currentData = loopQueue.getPrevData();
+            } else {
+                currentData = loopQueue.getNextData();
+            }
+        }
+        return currentData;
+    }
+
     /**
      * 第一次的时候
      * onPageSelected会比onBindViewHolder先调用
@@ -141,11 +156,11 @@ public abstract class NewPagerAdapter<T> extends ViewPager2.OnPageChangeCallback
                 prevHolder = getTargetViewHolder(position - 1);
                 nextHolder = getTargetViewHolder(position + 1);
 
-                onPrevPageLoaded(prevHolder, getRealPosition(position - 1));
-                onNextPageLoaded(nextHolder, getRealPosition(position + 1));
+                onPrevPageLoaded(prevHolder, null);
+                onNextPageLoaded(nextHolder, null);
 
                 int action = position < currentPosition ? PageAction.ACTION_REVERSE : PageAction.ACTION_FORWARD;
-                onCurrentPageLoaded(currentHolder, getRealPosition(position), action);
+                onCurrentPageLoaded(currentHolder, getTargetData(action));
             } else {
                 prevHolder = null;
                 nextHolder = null;
