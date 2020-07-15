@@ -8,37 +8,28 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.handy.note.helper.PageAction;
 import com.handy.note.widgets.NewPagerAdapter;
 import com.handy.note.widgets.R;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author: handy
  * @date: 2020-07-13
  * @description:
  */
-public class VerticalPageAdapter extends NewPagerAdapter {
+public class VerticalPageAdapter extends NewPagerAdapter<TestData> {
 
     private static final String TAG = "VerticalPageAdapter";
 
-    private LoopQueue<TestData> loopData;
     private OnItemClickListener mOnItemClickListener;
 
     private String currentData;
 
     public VerticalPageAdapter(List<TestData> data) {
-        this.loopData = new LoopQueue<>(data);
-    }
-
-    public void insertNextData(TestData testData){
-        loopData.insertNextData(testData);
+        super(data);
     }
 
     @NonNull
@@ -70,24 +61,26 @@ public class VerticalPageAdapter extends NewPagerAdapter {
         super.onCurrentPageLoaded(holder, position, action);
         TestData currentData;
         if (action == PageAction.ACTION_INIT_OR_SET) {
-            currentData = loopData.getData(position);
+            currentData = loopQueue.getCurrentData();
         } else {
             if (action == PageAction.ACTION_REVERSE) {
-                currentData = loopData.getPrevData();
+                currentData = loopQueue.getPrevData();
             } else {
-                currentData = loopData.getNextData();
+                currentData = loopQueue.getNextData();
             }
         }
-        Log.d(TAG, "onBindViewHolder " + position + " reverse=" + action);
+
         if (holder != null) {
             RecycleViewHolder itemHolder = (RecycleViewHolder) holder;
-            itemHolder.bindData(loopData.indexOf(currentData), currentData);
+            itemHolder.bindData(loopQueue.indexOf(currentData), currentData);
         }
+
+        Log.d(TAG, "VerticalHolder === " + position + " reverse=" + action + "\r\n data=" + loopQueue.toString());
     }
 
     @Override
     public int getItemCount() {
-        return loopData.size();
+        return loopQueue.size();
     }
 
     private class RecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -105,7 +98,7 @@ public class VerticalPageAdapter extends NewPagerAdapter {
         public void bindData(int index, TestData data) {
             this.index = index;
             this.data = data;
-            textView.setText("index=" + index + " data=" + data.index);
+            textView.setText("roomId=" + data.roomId);
         }
 
         @Override

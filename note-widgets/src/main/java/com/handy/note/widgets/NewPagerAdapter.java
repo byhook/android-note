@@ -6,14 +6,17 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.handy.note.LoopQueue;
 import com.handy.note.helper.PageAction;
+
+import java.util.List;
 
 /**
  * @author: handy
  * @date: 2020-07-14
  * @description:
  */
-public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
+public abstract class NewPagerAdapter<T> extends ViewPager2.OnPageChangeCallback {
 
     private static final String TAG = "NewPagerAdapter";
 
@@ -27,12 +30,33 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
     private RecyclerView.ViewHolder nextHolder;
     private RecyclerView.ViewHolder currentHolder;
 
+    protected LoopQueue<T> loopQueue;
+
+    private Integer loadAction;
+
+    public NewPagerAdapter(List<T> data) {
+        this.loopQueue = new LoopQueue<>(data);
+    }
+
     public void bindRecyclerView(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
     }
 
     public void enableLoop(boolean enableLoop) {
         this.enableLoop = enableLoop;
+    }
+
+    /**
+     * 插队逻辑
+     * @param data
+     * @return
+     */
+    public boolean insertNextData(T data){
+        return loopQueue.insertNextData(data);
+    }
+
+    public boolean appendData(List<T> data){
+        return loopQueue.appendData(data);
     }
 
     public abstract int getItemCount();
@@ -55,7 +79,12 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
         }
         if (currentHolder == null && currentPosition == position) {
             currentHolder = holder;
-            onCurrentPageLoaded(currentHolder, getRealPosition(position), PageAction.ACTION_INIT_OR_SET);
+            if(loadAction == null){
+                loadAction = PageAction.ACTION_INIT_OR_SET;
+            } else {
+                loadAction = PageAction.ACTION_FORWARD;
+            }
+            onCurrentPageLoaded(currentHolder, getRealPosition(position), loadAction);
         }
     }
 
@@ -108,7 +137,7 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
             Log.d(TAG, "onPageSelected init " + position + " select" + Integer.MAX_VALUE / 2);
         } else {
             currentHolder = getTargetViewHolder(position);
-            if (currentHolder != null) {
+            if (currentHolder != null && currentHolder.getAdapterPosition() >= 0) {
                 prevHolder = getTargetViewHolder(position - 1);
                 nextHolder = getTargetViewHolder(position + 1);
 
@@ -117,6 +146,10 @@ public abstract class NewPagerAdapter extends ViewPager2.OnPageChangeCallback {
 
                 int action = position < currentPosition ? PageAction.ACTION_REVERSE : PageAction.ACTION_FORWARD;
                 onCurrentPageLoaded(currentHolder, getRealPosition(position), action);
+            } else {
+                prevHolder = null;
+                nextHolder = null;
+                currentHolder = null;
             }
             Log.d(TAG, "onPageSelected" +
                     "\r\nposition=" + position +

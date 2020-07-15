@@ -1,7 +1,5 @@
 package com.handy.note;
 
-import java.util.Objects;
-
 /**
  * @author: handy
  * @date: 2020-07-14
@@ -9,12 +7,12 @@ import java.util.Objects;
  */
 public class TestData {
 
-    public int index;
+    public int roomId;
 
     public String data = String.valueOf(System.currentTimeMillis());
 
     public TestData(int index) {
-        this.index = index;
+        this.roomId = index;
     }
 
     @Override
@@ -22,7 +20,11 @@ public class TestData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TestData testData = (TestData) o;
-        return testData.index == this.index;
+        return testData.roomId == this.roomId;
     }
 
+    @Override
+    public String toString() {
+        return "TestData{" + "roomId=" + roomId + '\'' + '}';
+    }
 }

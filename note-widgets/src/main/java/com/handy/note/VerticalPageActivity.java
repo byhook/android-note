@@ -19,6 +19,7 @@ import com.handy.note.widgets.NewViewPager;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author: handy
@@ -46,16 +47,17 @@ public class VerticalPageActivity extends BaseNoteActivity implements NewViewPag
 
     private void setupViews() {
         List<TestData> data = new LinkedList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             data.add(new TestData(i));
         }
+        Random random = new Random(System.currentTimeMillis());
         VerticalPageAdapter adapter = new VerticalPageAdapter(data);
         adapter.setOnItemClickListener(new VerticalPageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int index) {
-                adapter.insertNextData(new TestData(5));
-                viewPager.turnNextItem();
-//                viewPager.setCurrentItem(3,false);
+                if(adapter.insertNextData(new TestData(8 + random.nextInt(7)))){
+                    viewPager.turnNextItem();
+                }
             }
         });
         viewPager.setAdapter(adapter);

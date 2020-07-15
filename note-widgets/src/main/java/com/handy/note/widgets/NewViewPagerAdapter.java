@@ -1,15 +1,10 @@
 package com.handy.note.widgets;
 
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-
-import java.util.List;
 
 /**
  * @author: handy
@@ -108,7 +103,7 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter {
     @Override
     public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewRecycled(holder);
-//        Log.d(TAG, "onViewRecycled " + holder);
+        Log.d(TAG, "onViewRecycled " + holder);
     }
 
     @Override
