@@ -162,12 +162,12 @@ public abstract class NewPagerAdapter<T> extends ViewPager2.OnPageChangeCallback
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        Log.d(TAG, "onPageScrolled position=" + position + " currentHolder=" + currentHolder);
+//        Log.d(TAG, "onPageScrolled position=" + position + " currentHolder=" + currentHolder);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        Log.d(TAG, "onPageScrollStateChanged state=" + state);
+//        Log.d(TAG, "onPageScrollStateChanged state=" + state + " size=" + recyclerView.getRecycledViewPool().getRecycledViewCount(0));
     }
 
 }

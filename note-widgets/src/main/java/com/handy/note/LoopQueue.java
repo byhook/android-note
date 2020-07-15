@@ -63,8 +63,12 @@ public class LoopQueue<T> {
      */
     public synchronized boolean insertNextData(T target) {
         int targetIndex = list.indexOf(target);
+        if (targetIndex == -1) {
+            list.add(getNextIndex(), target);
+            return true;
+        }
         int nextIndex = getNextIndex();
-        if (targetIndex > 0 && targetIndex != nextIndex && !target.equals(current)) {
+        if (targetIndex >= 0 && targetIndex != nextIndex && !target.equals(current)) {
             //列表中已经存在这个元素了
             list.remove(targetIndex);
             list.add(getNextIndex(), target);

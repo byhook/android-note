@@ -44,7 +44,7 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
     public void setCurrentItem(int item, boolean smoothScroll) {
         if (newViewPagerAdapter != null) {
             if (newViewPagerAdapter.isEnableLoop()) {
-                int realItem = MIDDLE_POINT + item % newViewPagerAdapter.getRealItemCount();
+                int realItem = MIDDLE_POINT + item;// % newViewPagerAdapter.getRealItemCount();
                 viewPager.setCurrentItem(realItem, smoothScroll);
             } else {
                 viewPager.setCurrentItem(item, smoothScroll);
@@ -53,8 +53,13 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
     }
 
     public void turnNextItem() {
+        turnNextItem(false);
+    }
+
+    public void turnNextItem(boolean smoothScroll) {
         int currentItem = viewPager.getCurrentItem() - MIDDLE_POINT;
-        setCurrentItem(currentItem + 1);
+        Log.d(TAG,"turnNextItem currentItem=" + currentItem);
+        setCurrentItem(currentItem + 1,smoothScroll);
     }
 
     public void setAdapter(NewPagerAdapter adapter) {
