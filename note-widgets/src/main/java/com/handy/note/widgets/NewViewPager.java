@@ -3,15 +3,14 @@ package com.handy.note.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.handy.note.adapter.CyclePagerAdapter;
-import com.handy.note.adapter.IPagerAdapter;
-import com.handy.note.adapter.NormalPagerAdapter;
+import com.handy.note.adapter.AbsPagerAdapter;
 import com.handy.note.adapter.NewViewPagerAdapter;
 
 /**
@@ -68,7 +67,7 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
         setCurrentItem(currentItem + 1,smoothScroll);
     }
 
-    public void setAdapter(CyclePagerAdapter adapter) {
+    public void setAdapter(AbsPagerAdapter adapter) {
         if (adapter != null) {
             if (newViewPagerAdapter == null || newViewPagerAdapter.getAdapter() != adapter) {
                 newViewPagerAdapter = new NewViewPagerAdapter(adapter, true);
@@ -78,6 +77,7 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
             viewPager.registerOnPageChangeCallback(adapter);
             viewPager.setAdapter(newViewPagerAdapter);
         }
+//        viewPager.setUserInputEnabled(false);
     }
 
     public void registerOnPageChangeCallback(@NonNull ViewPager2.OnPageChangeCallback callback) {

@@ -16,7 +16,7 @@ import java.util.List;
  * @date: 2020-07-14
  * @description:
  */
-public abstract class NormalPagerAdapter<T> extends ViewPager2.OnPageChangeCallback {
+public abstract class NormalPagerAdapter<T> extends AbsPagerAdapter {
 
     private static final String TAG = "NewPagerAdapter";
 
@@ -71,11 +71,11 @@ public abstract class NormalPagerAdapter<T> extends ViewPager2.OnPageChangeCallb
         Log.d(TAG, "onBindViewHolder=" + holder + " position=" + position);
         if (prevHolder == null && (currentPosition - 1) == position) {
             prevHolder = holder;
-            onPrevPageLoaded(prevHolder, getRealPosition(position));
+            onPrevPageLoaded(prevHolder, null);
         }
         if (nextHolder == null && (currentPosition + 1) == position) {
             nextHolder = holder;
-            onNextPageLoaded(prevHolder, getRealPosition(position));
+            onNextPageLoaded(prevHolder, null);
         }
         if (currentHolder == null && currentPosition == position) {
             currentHolder = holder;
@@ -84,20 +84,20 @@ public abstract class NormalPagerAdapter<T> extends ViewPager2.OnPageChangeCallb
             } else {
                 loadAction = PageAction.ACTION_FORWARD;
             }
-            onCurrentPageLoaded(currentHolder, getRealPosition(position), loadAction);
+            onCurrentPageLoaded(currentHolder, loopQueue.getData(position));
         }
     }
 
-    public void onPrevPageLoaded(RecyclerView.ViewHolder holder, int position) {
-        Log.d(TAG, "onPrevPageLoaded=" + holder + " position=" + position);
+    public void onPrevPageLoaded(RecyclerView.ViewHolder holder, T data) {
+        Log.d(TAG, "onPrevPageLoaded=" + holder + " position=" + data);
     }
 
-    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, int position, @PageAction int action) {
-        Log.d(TAG, "onCurrentPageLoaded=" + holder + " position=" + position);
+    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, T data) {
+        Log.d(TAG, "onCurrentPageLoaded=" + holder + " position=" + data);
     }
 
-    public void onNextPageLoaded(RecyclerView.ViewHolder holder, int position) {
-        Log.d(TAG, "onNextPageLoaded=" + holder + " position=" + position);
+    public void onNextPageLoaded(RecyclerView.ViewHolder holder, T data) {
+        Log.d(TAG, "onNextPageLoaded=" + holder + " position=" + data);
     }
 
     private RecyclerView.ViewHolder getTargetViewHolder(int position) {
@@ -137,11 +137,11 @@ public abstract class NormalPagerAdapter<T> extends ViewPager2.OnPageChangeCallb
             prevHolder = getTargetViewHolder(position - 1);
             nextHolder = getTargetViewHolder(position + 1);
 
-            onPrevPageLoaded(prevHolder, getRealPosition(position - 1));
-            onNextPageLoaded(nextHolder, getRealPosition(position + 1));
+            onPrevPageLoaded(prevHolder, null);
+            onNextPageLoaded(nextHolder, null);
 
             int action = position < currentPosition ? PageAction.ACTION_REVERSE : PageAction.ACTION_FORWARD;
-            onCurrentPageLoaded(currentHolder, getRealPosition(position), action);
+            onCurrentPageLoaded(currentHolder, loopQueue.getData(position));
         } else {
             prevHolder = null;
             nextHolder = null;

@@ -7,7 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.handy.note.adapter.CyclePagerAdapter;
 import com.handy.note.helper.PageAction;
@@ -39,28 +44,33 @@ public class VerticalPageAdapter extends CyclePagerAdapter<TestData> {
         return new RecycleViewHolder(rootView);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
-
-    }
 
     @Override
     public void onPrevPageLoaded(RecyclerView.ViewHolder holder, TestData data) {
         super.onPrevPageLoaded(holder, data);
+        Log.d(TAG, "onPrevPageLoaded " + data);
     }
 
     @Override
     public void onNextPageLoaded(RecyclerView.ViewHolder holder, TestData data) {
         super.onNextPageLoaded(holder, data);
+        Log.d(TAG, "onNextPageLoaded " + data);
     }
 
     @Override
     public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, TestData data) {
         super.onCurrentPageLoaded(holder, data);
         if (holder != null) {
-            RecycleViewHolder itemHolder = (RecycleViewHolder) holder;
-            itemHolder.bindData(0, data);
+            if(holder.itemView.getContext() instanceof FragmentActivity){
+                FragmentActivity hostActivity = (FragmentActivity) holder.itemView.getContext();
+                hostActivity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(holder.itemView.getId(), LivePageFragment.newInstance())
+                        .commit();
+            }
+
+            /*RecycleViewHolder itemHolder = (RecycleViewHolder) holder;
+            itemHolder.bindData(0, data);*/
         }
         Log.d(TAG, "VerticalHolder === " + holder + "\r\n data=" + loopQueue.toString());
     }
@@ -73,11 +83,13 @@ public class VerticalPageAdapter extends CyclePagerAdapter<TestData> {
     private class RecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView textView;
+        private ViewPager viewPager;
         private int index;
         private TestData data;
 
         public RecycleViewHolder(@NonNull View itemView) {
             super(itemView);
+            viewPager = itemView.findViewById(R.id.view_pager);
             textView = itemView.findViewById(R.id.btn_show);
             textView.setOnClickListener(this);
         }
@@ -85,6 +97,34 @@ public class VerticalPageAdapter extends CyclePagerAdapter<TestData> {
         public void bindData(int index, TestData data) {
             this.index = index;
             this.data = data;
+
+            /*viewPager.setAdapter(new FragmentPagerAdapter(((FragmentActivity)itemView.getContext()).getSupportFragmentManager()) {
+                @Override
+                public int getCount() {
+                    return 3;
+                }
+
+                @NonNull
+                @Override
+                public Fragment getItem(int position) {
+                    return LivePageFragment.newInstance();
+                }
+
+                /*@NonNull
+                @Override
+                public Object instantiateItem(@NonNull ViewGroup container, int position) {
+                    View rootView = LayoutInflater.from(container.getContext()).inflate(R.layout.new_page,container,false);
+                    container.addView(rootView);
+                    return rootView;
+                }
+
+                @Override
+                public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                    View rootView = (View) object;
+                    container.removeView(rootView);
+                }
+            });*/
+
             textView.setText("roomId=" + data.roomId);
         }
 

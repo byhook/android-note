@@ -1,10 +1,13 @@
 package com.handy.note.adapter;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.handy.note.LoopQueue;
 import com.handy.note.helper.PageAction;
@@ -16,9 +19,9 @@ import java.util.List;
  * @date: 2020-07-14
  * @description:
  */
-public abstract class CyclePagerAdapter<T> extends ViewPager2.OnPageChangeCallback implements IPagerAdapter {
+public abstract class CyclePagerAdapter<T> extends AbsPagerAdapter {
 
-    private static final String TAG = "NewPagerAdapter";
+    private static final String TAG = "CyclePagerAdapter";
 
     private RecyclerView recyclerView;
 
@@ -72,11 +75,11 @@ public abstract class CyclePagerAdapter<T> extends ViewPager2.OnPageChangeCallba
         Log.d(TAG, "onBindViewHolder=" + holder + " position=" + position);
         if (prevHolder == null && (currentPosition - 1) == position) {
             prevHolder = holder;
-            onPrevPageLoaded(prevHolder, null);
+            onPrevPageLoaded(prevHolder, loopQueue.getPrevData());
         }
         if (nextHolder == null && (currentPosition + 1) == position) {
             nextHolder = holder;
-            onNextPageLoaded(prevHolder, null);
+            onNextPageLoaded(nextHolder, loopQueue.getNextData());
         }
         if (currentHolder == null && currentPosition == position) {
             currentHolder = holder;
@@ -130,9 +133,9 @@ public abstract class CyclePagerAdapter<T> extends ViewPager2.OnPageChangeCallba
             currentData = loopQueue.getCurrentData();
         } else {
             if (action == PageAction.ACTION_REVERSE) {
-                currentData = loopQueue.getPrevData();
+                currentData = loopQueue.movePrevData();
             } else {
-                currentData = loopQueue.getNextData();
+                currentData = loopQueue.moveNextData();
             }
         }
         return currentData;
@@ -156,8 +159,8 @@ public abstract class CyclePagerAdapter<T> extends ViewPager2.OnPageChangeCallba
                 prevHolder = getTargetViewHolder(position - 1);
                 nextHolder = getTargetViewHolder(position + 1);
 
-                onPrevPageLoaded(prevHolder, null);
-                onNextPageLoaded(nextHolder, null);
+                onPrevPageLoaded(prevHolder, loopQueue.getPrevData());
+                onNextPageLoaded(nextHolder, loopQueue.getNextData());
 
                 int action = position < currentPosition ? PageAction.ACTION_REVERSE : PageAction.ACTION_FORWARD;
                 onCurrentPageLoaded(currentHolder, getTargetData(action));
@@ -183,6 +186,25 @@ public abstract class CyclePagerAdapter<T> extends ViewPager2.OnPageChangeCallba
     @Override
     public void onPageScrollStateChanged(int state) {
 //        Log.d(TAG, "onPageScrollStateChanged state=" + state + " size=" + recyclerView.getRecycledViewPool().getRecycledViewCount(0));
+
+
+
     }
+
+    private void LoadPageDelay(){
+        handler.removeCallbacksAndMessages(null);
+        handler.sendEmptyMessageDelayed(100,200);
+    }
+
+    private Handler handler = new Handler(Looper.getMainLooper()){
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+
+
+
+        }
+
+    };
 
 }

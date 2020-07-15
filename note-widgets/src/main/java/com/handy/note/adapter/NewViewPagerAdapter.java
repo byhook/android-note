@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * @date: 2020-07-13
  * @description:
  */
-public class NewViewPagerAdapter extends RecyclerView.Adapter implements IPagerAdapter {
+public class NewViewPagerAdapter extends RecyclerView.Adapter {
 
     private static final String TAG = "NewViewPagerAdapter";
 
-    private CyclePagerAdapter pagerAdapter;
+    private AbsPagerAdapter pagerAdapter;
 
     private OnPageCenterListener mOnPageCenterListener;
 
@@ -25,7 +25,7 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter implements IPagerA
 
     private boolean enableLoop;
 
-    public NewViewPagerAdapter(CyclePagerAdapter adapter, boolean changed) {
+    public NewViewPagerAdapter(AbsPagerAdapter adapter, boolean changed) {
         this.pagerAdapter = adapter;
         this.changed = changed;
     }
@@ -38,7 +38,7 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter implements IPagerA
         return enableLoop;
     }
 
-    public CyclePagerAdapter getAdapter() {
+    public AbsPagerAdapter getAdapter() {
         return pagerAdapter;
     }
 
@@ -50,6 +50,7 @@ public class NewViewPagerAdapter extends RecyclerView.Adapter implements IPagerA
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
 //        Log.d(TAG, "onAttachedToRecyclerView ");
+        recyclerView.setItemViewCacheSize(1);
         pagerAdapter.enableLoop(enableLoop);
         pagerAdapter.bindRecyclerView(recyclerView);
         if (mOnPageCenterListener != null) {

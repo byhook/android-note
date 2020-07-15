@@ -28,6 +28,10 @@ public class LoopQueue<T> {
     }
 
     public synchronized T getPrevData() {
+        return list.get(getPrevIndex());
+    }
+
+    public synchronized T movePrevData() {
         return current = list.get(getPrevIndex());
     }
 
@@ -37,8 +41,12 @@ public class LoopQueue<T> {
         return safeIndex;
     }
 
-    public synchronized T getNextData() {
+    public synchronized T moveNextData() {
         return current = list.get(getNextIndex());
+    }
+
+    public synchronized T getNextData() {
+        return list.get(getNextIndex());
     }
 
     public synchronized int indexOf(T t) {
