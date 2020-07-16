@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentViewHolder;
 
 import com.handy.note.LoopQueue;
 import com.handy.note.helper.PageAction;
@@ -19,7 +20,7 @@ import java.util.List;
  * @date: 2020-07-14
  * @description:
  */
-public abstract class CyclePagerAdapter<T> extends AbsPagerAdapter {
+public abstract class CyclePagerAdapter<T> extends AbsFragmentPagerAdapter {
 
     private static final String TAG = "CyclePagerAdapter";
 
@@ -29,9 +30,9 @@ public abstract class CyclePagerAdapter<T> extends AbsPagerAdapter {
 
     private int currentPosition = -Integer.MAX_VALUE;
 
-    private RecyclerView.ViewHolder prevHolder;
-    private RecyclerView.ViewHolder nextHolder;
-    private RecyclerView.ViewHolder currentHolder;
+    private FragmentViewHolder prevHolder;
+    private FragmentViewHolder nextHolder;
+    private FragmentViewHolder currentHolder;
 
     protected LoopQueue<T> loopQueue;
 
@@ -69,45 +70,22 @@ public abstract class CyclePagerAdapter<T> extends AbsPagerAdapter {
         return 0;
     }
 
-    public abstract RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
-
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder=" + holder + " position=" + position);
-        if (prevHolder == null && (currentPosition - 1) == position) {
-            prevHolder = holder;
-            onPrevPageLoaded(prevHolder, loopQueue.getPrevData());
-        }
-        if (nextHolder == null && (currentPosition + 1) == position) {
-            nextHolder = holder;
-            onNextPageLoaded(nextHolder, loopQueue.getNextData());
-        }
-        if (currentHolder == null && currentPosition == position) {
-            currentHolder = holder;
-            if (loadAction == null) {
-                loadAction = PageAction.ACTION_INIT_OR_SET;
-            } else {
-                loadAction = PageAction.ACTION_FORWARD;
-            }
-            onCurrentPageLoaded(currentHolder, getTargetData(loadAction));
-        }
-    }
-
-    public void onPrevPageLoaded(RecyclerView.ViewHolder holder, T data) {
+    public void onPrevPageLoaded(FragmentViewHolder holder, T data) {
         Log.d(TAG, "onPrevPageLoaded=" + holder + " position=" + data);
     }
 
-    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, T data) {
+    public void onCurrentPageLoaded(FragmentViewHolder holder, T data) {
         Log.d(TAG, "onCurrentPageLoaded=" + holder + " position=" + data);
     }
 
-    public void onNextPageLoaded(RecyclerView.ViewHolder holder, T data) {
+    public void onNextPageLoaded(FragmentViewHolder holder, T data) {
         Log.d(TAG, "onNextPageLoaded=" + holder + " position=" + data);
     }
 
-    private RecyclerView.ViewHolder getTargetViewHolder(int position) {
-        RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
+    private FragmentViewHolder getTargetViewHolder(int position) {
+        FragmentViewHolder holder = (FragmentViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
         if (holder == null) {
-            holder = recyclerView.getRecycledViewPool().getRecycledView(getItemViewType(position));
+            holder = (FragmentViewHolder) recyclerView.getRecycledViewPool().getRecycledView(getItemViewType(position));
 //            Log.d(TAG, "getTargetViewHolder cache holder=" + holder);
         } else {
 //            Log.d(TAG, "getTargetViewHolder adapter holder=" + holder);
@@ -150,10 +128,45 @@ public abstract class CyclePagerAdapter<T> extends AbsPagerAdapter {
      */
     @Override
     public void onPageSelected(int position) {
-        if (currentPosition == -Integer.MAX_VALUE) {
+        if (currentPosition != -Integer.MAX_VALUE) {
+            currentHolder = getTargetViewHolder(position);
+            if (currentHolder != null && currentHolder.getAdapterPosition() >= 0) {
+                prevHolder = getTargetViewHolder(position - 1);
+                nextHolder = getTargetViewHolder(position + 1);
+
+                if(prevHolder!=null){
+                    onPrevPageLoaded(prevHolder, loopQueue.getPrevData());
+                }
+
+                if(nextHolder != null){
+                    onNextPageLoaded(nextHolder, loopQueue.getNextData());
+                }
+
+                int action = position < currentPosition ? PageAction.ACTION_REVERSE : PageAction.ACTION_FORWARD;
+                onCurrentPageLoaded(currentHolder, getTargetData(action));
+            } else {
+                prevHolder = null;
+                nextHolder = null;
+                currentHolder = null;
+            }
             currentPosition = position;
-            Log.d(TAG, "onPageSelected init " + position + " select" + Integer.MAX_VALUE / 2);
-        } else {
+            Log.d(TAG, "onPageSelected" +
+                    "\r\nposition=" + position +
+                    "\r\nprevHolder=" + prevHolder +
+                    "\r\nnextHolder=" + nextHolder +
+                    "\r\ncurrentHolder=" + currentHolder);
+        }
+    }
+
+    public int getRelationPostion(){
+        return currentPosition;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        Log.d(TAG, "onPageScrolled position=" + position + " currentHolder=" + getTargetViewHolder(position + 1));
+        if(currentPosition == -Integer.MAX_VALUE){
+            currentPosition = position;
             currentHolder = getTargetViewHolder(position);
             if (currentHolder != null && currentHolder.getAdapterPosition() >= 0) {
                 prevHolder = getTargetViewHolder(position - 1);
@@ -169,25 +182,12 @@ public abstract class CyclePagerAdapter<T> extends AbsPagerAdapter {
                 nextHolder = null;
                 currentHolder = null;
             }
-            Log.d(TAG, "onPageSelected" +
-                    "\r\nposition=" + position +
-                    "\r\nprevHolder=" + prevHolder +
-                    "\r\nnextHolder=" + nextHolder +
-                    "\r\ncurrentHolder=" + currentHolder);
         }
-        currentPosition = position;
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//        Log.d(TAG, "onPageScrolled position=" + position + " currentHolder=" + currentHolder);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-//        Log.d(TAG, "onPageScrollStateChanged state=" + state + " size=" + recyclerView.getRecycledViewPool().getRecycledViewCount(0));
-
-
+        Log.d(TAG, "onPageScrollStateChanged state=" + state + " size=" + recyclerView.getRecycledViewPool().getRecycledViewCount(0));
 
     }
 

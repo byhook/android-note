@@ -3,14 +3,15 @@ package com.handy.note.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.handy.note.adapter.AbsPagerAdapter;
+import com.handy.note.adapter.AbsFragmentPagerAdapter;
+import com.handy.note.adapter.CyclePagerAdapter;
 import com.handy.note.adapter.NewViewPagerAdapter;
 
 /**
@@ -62,15 +63,16 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
     }
 
     public void turnNextItem(boolean smoothScroll) {
-        int currentItem = viewPager.getCurrentItem() - MIDDLE_POINT;
+        CyclePagerAdapter cyclePagerAdapter = (CyclePagerAdapter) newViewPagerAdapter.getAdapter();
+        int currentItem = cyclePagerAdapter.getRelationPostion() - MIDDLE_POINT;
         Log.d(TAG,"turnNextItem currentItem=" + currentItem);
         setCurrentItem(currentItem + 1,smoothScroll);
     }
 
-    public void setAdapter(AbsPagerAdapter adapter) {
+    public void setAdapter(AbsFragmentPagerAdapter adapter) {
         if (adapter != null) {
             if (newViewPagerAdapter == null || newViewPagerAdapter.getAdapter() != adapter) {
-                newViewPagerAdapter = new NewViewPagerAdapter(adapter, true);
+                newViewPagerAdapter = new NewViewPagerAdapter((FragmentActivity) getContext(),adapter, true);
                 newViewPagerAdapter.enableLoop(enableLoop);
                 newViewPagerAdapter.setPageCenterListener(this);
             }
@@ -78,6 +80,14 @@ public class NewViewPager extends FrameLayout implements NewViewPagerAdapter.OnP
             viewPager.setAdapter(newViewPagerAdapter);
         }
 //        viewPager.setUserInputEnabled(false);
+    }
+
+    public NewViewPagerAdapter getNewViewPagerAdapter() {
+        return newViewPagerAdapter;
+    }
+
+    public AbsFragmentPagerAdapter getFragmentAdapter(){
+        return newViewPagerAdapter.getAdapter();
     }
 
     public void registerOnPageChangeCallback(@NonNull ViewPager2.OnPageChangeCallback callback) {

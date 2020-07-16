@@ -1,5 +1,6 @@
 package com.handy.note;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentViewHolder;
 
 import com.handy.note.adapter.CyclePagerAdapter;
-import com.handy.note.helper.PageAction;
-import com.handy.note.adapter.NormalPagerAdapter;
 import com.handy.note.widgets.R;
 
 import java.util.List;
@@ -36,43 +37,49 @@ public class VerticalPageAdapter extends CyclePagerAdapter<TestData> {
         super(data);
     }
 
-    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder " + viewType);
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.vertical_page_item_layer, parent, false);
-        return new RecycleViewHolder(rootView);
-    }
-
-
-    @Override
-    public void onPrevPageLoaded(RecyclerView.ViewHolder holder, TestData data) {
+    public void onPrevPageLoaded(FragmentViewHolder holder, TestData data) {
         super.onPrevPageLoaded(holder, data);
-        Log.d(TAG, "onPrevPageLoaded " + data);
+        FragmentActivity fragmentActivity = (FragmentActivity) holder.itemView.getContext();
+        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag("f"+holder.getItemId());
+        Log.d(TAG, "onPrevPageLoaded " + data +
+                "\r\n" + fragment
+        );
     }
 
     @Override
-    public void onNextPageLoaded(RecyclerView.ViewHolder holder, TestData data) {
+    public void onNextPageLoaded(FragmentViewHolder holder, TestData data) {
         super.onNextPageLoaded(holder, data);
-        Log.d(TAG, "onNextPageLoaded " + data);
+        FragmentActivity fragmentActivity = (FragmentActivity) holder.itemView.getContext();
+        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag("f"+holder.getItemId());
+        Log.d(TAG, "onNextPageLoaded " + data +
+                "\r\n" + fragment
+        );
     }
 
     @Override
-    public void onCurrentPageLoaded(RecyclerView.ViewHolder holder, TestData data) {
+    public void onCurrentPageLoaded(FragmentViewHolder holder, TestData data) {
         super.onCurrentPageLoaded(holder, data);
         if (holder != null) {
-            if(holder.itemView.getContext() instanceof FragmentActivity){
+            FragmentActivity fragmentActivity = (FragmentActivity) holder.itemView.getContext();
+            FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+            LivePageFragment fragment = (LivePageFragment) fragmentManager.findFragmentByTag("f"+holder.getItemId());
+            fragment.updateFragment(data);
+            /*if(holder.itemView.getContext() instanceof FragmentActivity){
                 FragmentActivity hostActivity = (FragmentActivity) holder.itemView.getContext();
                 hostActivity.getSupportFragmentManager()
                         .beginTransaction()
                         .replace(holder.itemView.getId(), LivePageFragment.newInstance())
                         .commit();
-            }
-
-            /*RecycleViewHolder itemHolder = (RecycleViewHolder) holder;
-            itemHolder.bindData(0, data);*/
+            }*/
+            Log.d(TAG, "VerticalHolder === " + holder +
+                    "\r\nposition=" + holder.getAdapterPosition() +
+                    "\r\n data=" + loopQueue.toString() +
+                    "\r\nfragment=" + fragment);
         }
-        Log.d(TAG, "VerticalHolder === " + holder + "\r\n data=" + loopQueue.toString());
+
     }
 
     @Override
@@ -80,7 +87,7 @@ public class VerticalPageAdapter extends CyclePagerAdapter<TestData> {
         return loopQueue.size();
     }
 
-    private class RecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    /*private class RecycleViewHolder extends FragmentViewHolder implements View.OnClickListener {
 
         public TextView textView;
         private ViewPager viewPager;
@@ -97,34 +104,6 @@ public class VerticalPageAdapter extends CyclePagerAdapter<TestData> {
         public void bindData(int index, TestData data) {
             this.index = index;
             this.data = data;
-
-            /*viewPager.setAdapter(new FragmentPagerAdapter(((FragmentActivity)itemView.getContext()).getSupportFragmentManager()) {
-                @Override
-                public int getCount() {
-                    return 3;
-                }
-
-                @NonNull
-                @Override
-                public Fragment getItem(int position) {
-                    return LivePageFragment.newInstance();
-                }
-
-                /*@NonNull
-                @Override
-                public Object instantiateItem(@NonNull ViewGroup container, int position) {
-                    View rootView = LayoutInflater.from(container.getContext()).inflate(R.layout.new_page,container,false);
-                    container.addView(rootView);
-                    return rootView;
-                }
-
-                @Override
-                public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-                    View rootView = (View) object;
-                    container.removeView(rootView);
-                }
-            });*/
-
             textView.setText("roomId=" + data.roomId);
         }
 
@@ -134,7 +113,7 @@ public class VerticalPageAdapter extends CyclePagerAdapter<TestData> {
                 mOnItemClickListener.onItemClick(index);
             }
         }
-    }
+    }*/
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
