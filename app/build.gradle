@@ -1,15 +1,16 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.0"
     dataBinding{
         enabled = true
     }
     defaultConfig {
         applicationId "com.handy.android.note"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion 24
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -20,6 +21,36 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            List<String> javaList = new ArrayList()
+            List<String> resList = new ArrayList()
+            //app
+            javaList.add('src/main/java')
+            javaList.add('src/main/aidl')
+
+            resList.add('src/main/res')
+
+            java.srcDirs = javaList
+            res.srcDirs = resList
+            aidl.srcDirs = javaList
+            renderscript.srcDirs = javaList
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+        }
+    }
+
+    //指定一种风格维度
+    flavorDimensions "default"
+    productFlavors {
+        vest {
+            //测试用的马甲包
+            dimension "default"
+            applicationId "com.tencent.wesing.vest"
+            //指定版本名称后缀
+            versionNameSuffix "-vest"
         }
     }
 
@@ -40,4 +71,9 @@ dependencies {
     implementation project(':note-immersive')
     implementation project(':note-glide')
     implementation project(':note-widgets')
+    implementation "androidx.core:core-ktx:${core_ktx_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
