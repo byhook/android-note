@@ -33,4 +33,11 @@
         android:textAllCaps="false"
         android:onClick="onVerticalPagerClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="kotlin笔记"
+        android:textAllCaps="false"
+        android:onClick="onKotlinNoteClick"/>
+
 </LinearLayout>

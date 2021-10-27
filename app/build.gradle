@@ -71,6 +71,8 @@ dependencies {
     implementation project(':note-immersive')
     implementation project(':note-glide')
     implementation project(':note-widgets')
+    implementation project(':note-kotlin')
+
     implementation "androidx.core:core-ktx:${core_ktx_version}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

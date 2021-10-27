@@ -20,27 +20,31 @@ ext {
             okhttpVersion = "4.7.2",
             recyclerViewVersion = "1.1.0",
             navigationVersion = "2.2.2",
-            constraintlayoutVersion = "1.1.3"
+            constraintlayoutVersion = "1.1.3",
+            kotlinx_coroutines_core = "1.4.3",
+            kotlinx_coroutines_android = "1.4.3"
     ]
 
     dependencies = [
-            "appcompat"         : "androidx.appcompat:appcompat:$appcompatVersion",
-            "junit"             : "junit:junit:$junitVersion",
-            "ext.junit"         : "androidx.test.ext:junit:$extJunitVersion",
-            "espresso-core"     : "androidx.test.espresso:espresso-core:$espressoVersion",
-            "viewModel"         : "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion",
-            "viewModelSaveState": "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion",
-            "liveData"          : "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion",
-            "lifecycleRuntime"  : "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion",
-            "lifecycleCompiler" : "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion",
-            "navigation"        : "androidx.navigation:navigation-runtime:$navigationVersion",
-            "roomRuntime"       : "androidx.room:room-runtime:$roomVersion",
-            "roomCompiler"      : "androidx.room:room-compiler:$roomVersion",
-            "glide"             : "com.github.bumptech.glide:glide:$glideVersion",
-            "glideCompiler"     : "com.github.bumptech.glide:compiler:$glideVersion",
-            "okhttp"            : "com.squareup.okhttp3:okhttp:$okhttpVersion",
-            "constraintlayout"  : "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
-            "recyclerView"      : "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+            "appcompat"                 : "androidx.appcompat:appcompat:$appcompatVersion",
+            "junit"                     : "junit:junit:$junitVersion",
+            "ext.junit"                 : "androidx.test.ext:junit:$extJunitVersion",
+            "espresso-core"             : "androidx.test.espresso:espresso-core:$espressoVersion",
+            "viewModel"                 : "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion",
+            "viewModelSaveState"        : "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion",
+            "liveData"                  : "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion",
+            "lifecycleRuntime"          : "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion",
+            "lifecycleCompiler"         : "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion",
+            "navigation"                : "androidx.navigation:navigation-runtime:$navigationVersion",
+            "roomRuntime"               : "androidx.room:room-runtime:$roomVersion",
+            "roomCompiler"              : "androidx.room:room-compiler:$roomVersion",
+            "glide"                     : "com.github.bumptech.glide:glide:$glideVersion",
+            "glideCompiler"             : "com.github.bumptech.glide:compiler:$glideVersion",
+            "okhttp"                    : "com.squareup.okhttp3:okhttp:$okhttpVersion",
+            "constraintlayout"          : "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
+            "recyclerView"              : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+            "kotlinx_coroutines_core"   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_core",
+            "kotlinx_coroutines_android": "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_android"
     ]
 
 }
