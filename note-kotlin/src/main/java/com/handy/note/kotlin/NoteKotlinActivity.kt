@@ -15,6 +15,8 @@ import kotlin.system.measureTimeMillis
  */
 class NoteKotlinActivity : BaseNoteActivity() {
 
+    private var mainScope = CoroutineScope(Dispatchers.Default)
+
     companion object {
 
         const val TAG = "NoteKotlinActivity"
@@ -29,6 +31,11 @@ class NoteKotlinActivity : BaseNoteActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activigty_note_kotlin_layer)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainScope.cancel()
     }
 
     fun onCoroutinesClick(view: View?) {
@@ -91,6 +98,16 @@ class NoteKotlinActivity : BaseNoteActivity() {
     private suspend fun doSomethingUseTwo(): Int {
         delay(1000L)
         return 35
+    }
+
+    fun onScopeClick(view: View?){
+        repeat(100) { index ->
+            mainScope.launch {
+                delay((index + 1) * 200L)
+                Log.d(TAG,"mainScope repeat")
+            }
+        }
+        finish()
     }
 
 }

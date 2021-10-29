@@ -16,4 +16,11 @@
         android:textAllCaps="false"
         android:onClick="onAsyncClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="作用域"
+        android:textAllCaps="false"
+        android:onClick="onScopeClick"/>
+
 </LinearLayout>
