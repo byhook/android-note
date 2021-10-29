@@ -7,27 +7,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onCoroutinesClick"/>
+        android:textAllCaps="false"
+        android:text="forEach"
+        android:onClick="onSimpleClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Async"
         android:textAllCaps="false"
-        android:onClick="onAsyncClick"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="作用域"
-        android:textAllCaps="false"
-        android:onClick="onScopeClick"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="异步流"
-        android:textAllCaps="false"
-        android:onClick="onFlowClick"/>
+        android:text="sequence"
+        android:onClick="onSequenceClick"/>
 
 </LinearLayout>

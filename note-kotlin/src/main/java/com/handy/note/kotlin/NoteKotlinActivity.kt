@@ -110,4 +110,8 @@ class NoteKotlinActivity : BaseNoteActivity() {
         finish()
     }
 
+    fun onFlowClick(view: View?){
+        NoteKotlinFlowActivity.intentStart(this)
+    }
+
 }

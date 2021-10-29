@@ -4,5 +4,6 @@
 
     <application>
         <activity android:name=".NoteKotlinActivity" />
+        <activity android:name=".NoteKotlinFlowActivity" />
     </application>
 </manifest>
