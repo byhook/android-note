@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        android:text="forEach"
+        android:text="foreach"
         android:onClick="onSimpleClick"/>
 
     <Button
@@ -17,5 +17,12 @@
         android:textAllCaps="false"
         android:text="sequence"
         android:onClick="onSequenceClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="flow"
+        android:onClick="onFlowClick"/>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.handy.note.base.BaseNoteActivity
 import kotlinx.coroutines.*
 import kotlin.system.measureTimeMillis

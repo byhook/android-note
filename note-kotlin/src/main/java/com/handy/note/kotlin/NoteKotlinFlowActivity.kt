@@ -7,6 +7,9 @@ import android.util.Log
 import android.view.View
 import com.handy.note.base.BaseNoteActivity
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlin.system.measureTimeMillis
 
 /**
@@ -51,6 +54,19 @@ class NoteKotlinFlowActivity : BaseNoteActivity() {
     fun onSequenceClick(view: View?) {
         //简单示例
         simpleSequence().forEach { value -> Log.d(TAG, "sequence $value") }
+    }
+
+    private fun simpleFlow(): Flow<Int> = flow {
+        for (index in 0..2){
+            delay(1000)
+            emit(index)
+        }
+    }
+
+    fun onFlowClick(view: View?){
+        runBlocking {
+            simpleFlow().collect { value -> Log.d(TAG, "collect $value") }
+        }
     }
 
 }
