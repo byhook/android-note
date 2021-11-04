@@ -94,4 +94,18 @@ class NoteKotlinFlowActivity : BaseNoteActivity() {
         }
     }
 
+    private fun withContextSimple(): Flow<Int> = flow {
+        Log.d(TAG, "withContextSimple started simple flow")
+        for (i in 1..3) {
+            delay(1000L)
+            //[DefaultDispatcher-worker-1]
+            Log.d(TAG, "withContextSimple [${Thread.currentThread().name}] emit:$i")
+            emit(i)
+        }
+    }.flowOn(Dispatchers.Default)
+
+    fun onWithContextClick(view: View?) = runBlocking {
+        withContextSimple().collect { value -> Log.d(TAG, "onWithContextClick collected $value") }
+    }
+
 }
