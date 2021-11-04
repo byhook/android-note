@@ -25,4 +25,18 @@
         android:text="flow"
         android:onClick="onFlowClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="reduce"
+        android:onClick="onReduceClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="collect"
+        android:onClick="onCollectClick"/>
+
 </LinearLayout>

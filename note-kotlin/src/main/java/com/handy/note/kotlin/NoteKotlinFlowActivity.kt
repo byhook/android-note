@@ -7,9 +7,7 @@ import android.util.Log
 import android.view.View
 import com.handy.note.base.BaseNoteActivity
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlin.system.measureTimeMillis
 
 /**
@@ -45,10 +43,10 @@ class NoteKotlinFlowActivity : BaseNoteActivity() {
     }
 
     private fun simpleSequence(): Sequence<Int> = sequence {
-         for (index in 0..2){
-             Thread.sleep(1000)
-             yield(index)
-         }
+        for (index in 0..2) {
+            Thread.sleep(1000)
+            yield(index)
+        }
     }
 
     fun onSequenceClick(view: View?) {
@@ -57,15 +55,42 @@ class NoteKotlinFlowActivity : BaseNoteActivity() {
     }
 
     private fun simpleFlow(): Flow<Int> = flow {
-        for (index in 0..2){
+        for (index in 0..2) {
             delay(1000)
             emit(index)
         }
     }
 
-    fun onFlowClick(view: View?){
+    fun onFlowClick(view: View?) {
         runBlocking {
             simpleFlow().collect { value -> Log.d(TAG, "collect $value") }
+        }
+    }
+
+    fun onReduceClick(view: View?) {
+        GlobalScope.async {
+            val sum = (1..3).asFlow()
+                .map { it * it }
+                .reduce { a, b -> a + b }
+            Log.d(TAG, "onReduceClick sum:$sum")
+        }
+    }
+
+    fun onCollectClick(view: View?) {
+        GlobalScope.async {
+            (1..5).asFlow()
+                .filter {
+                    Log.d(TAG, "onCollectClick filter it:$it")
+                    it % 2 == 0
+                }
+                .map {
+                    Log.d(TAG, "onCollectClick map it:$it")
+                    it
+                }
+                .collect {
+                    Log.d(TAG, "onCollectClick collect it:$it")
+                }
+
         }
     }
 
