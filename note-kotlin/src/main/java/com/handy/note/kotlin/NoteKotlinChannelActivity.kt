@@ -8,6 +8,9 @@ import android.view.View
 import com.handy.note.base.BaseNoteActivity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.flow.*
 
 /**
@@ -45,11 +48,16 @@ class NoteKotlinChannelActivity : BaseNoteActivity() {
         }
         //这里我们打印了5次被接收的整数：
         GlobalScope.launch(Dispatchers.Main) {
-            repeat(5) { Log.d(TAG, "[${Thread.currentThread().name}] receive:${channel.receive()}") }
+            repeat(5) {
+                Log.d(
+                    TAG,
+                    "[${Thread.currentThread().name}] receive:${channel.receive()}"
+                )
+            }
         }
     }
 
-    fun onChannelCloseClick(view: View?){
+    fun onChannelCloseClick(view: View?) {
         val channel = Channel<Int>()
         GlobalScope.launch(Dispatchers.Default) {
             Log.d(TAG, "[${Thread.currentThread().name}] send start")
@@ -61,6 +69,20 @@ class NoteKotlinChannelActivity : BaseNoteActivity() {
             for (index in channel) {
                 Log.d(TAG, "[${Thread.currentThread().name}] index:$index")
             }
+        }
+    }
+
+    /**
+     * 生产-消费
+     */
+    private fun CoroutineScope.produceSquares(): ReceiveChannel<Int> = produce {
+        for (x in 1..5) send(x * x)
+    }
+
+    fun onProduceClick(view: View?) {
+        GlobalScope.launch(Dispatchers.Default) {
+            val squares = produceSquares()
+            squares.consumeEach { Log.d(TAG, "[${Thread.currentThread().name}] index:$it") }
         }
     }
 
