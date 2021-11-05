@@ -11,7 +11,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.flow.*
 
 /**
  * date: 2021-10-27
@@ -83,6 +82,33 @@ class NoteKotlinChannelActivity : BaseNoteActivity() {
         GlobalScope.launch(Dispatchers.Default) {
             val squares = produceSquares()
             squares.consumeEach { Log.d(TAG, "[${Thread.currentThread().name}] index:$it") }
+        }
+    }
+
+    private fun CoroutineScope.produceNumbers() = produce<Int> {
+        var index = 1
+        while (true) {
+            Log.d(TAG,"produceNumbers send:$index")
+            send(index++)
+        }
+    }
+
+    private fun CoroutineScope.square(numbers: ReceiveChannel<Int>): ReceiveChannel<Int> = produce {
+        for (index in numbers) {
+            Log.d(TAG,"square send:$index")
+            send(index * index)
+        }
+    }
+
+    fun onChannelClick(view: View?) {
+        GlobalScope.launch(Dispatchers.Default) {
+            val numbers = produceNumbers()
+            val squares = square(numbers)
+            repeat(5) {
+                Log.d(TAG,"onChannelClick receive:${squares.receive()}")
+            }
+            //取消子协程
+            coroutineContext.cancelChildren()
         }
     }
 
