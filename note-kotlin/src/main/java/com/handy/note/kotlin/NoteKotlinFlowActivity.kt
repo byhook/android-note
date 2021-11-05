@@ -8,7 +8,6 @@ import android.view.View
 import com.handy.note.base.BaseNoteActivity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlin.system.measureTimeMillis
 
 /**
  * date: 2021-10-27
@@ -32,7 +31,7 @@ class NoteKotlinFlowActivity : BaseNoteActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activigty_note_kotlin_flow_layer)
+        setContentView(R.layout.activity_note_kotlin_flow_layer)
     }
 
     private fun simple(): List<Int> = listOf(0, 1, 2)

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.handy.note.base.BaseNoteActivity
 import kotlinx.coroutines.*
 import kotlin.system.measureTimeMillis
@@ -31,7 +30,7 @@ class NoteKotlinActivity : BaseNoteActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activigty_note_kotlin_layer)
+        setContentView(R.layout.activity_note_kotlin_layer)
     }
 
     override fun onDestroy() {
@@ -113,6 +112,10 @@ class NoteKotlinActivity : BaseNoteActivity() {
 
     fun onFlowClick(view: View?){
         NoteKotlinFlowActivity.intentStart(this)
+    }
+
+    fun onChannelClick(view: View?){
+        NoteKotlinChannelActivity.intentStart(this)
     }
 
 }

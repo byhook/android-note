@@ -30,4 +30,11 @@
         android:textAllCaps="false"
         android:onClick="onFlowClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="通道"
+        android:textAllCaps="false"
+        android:onClick="onChannelClick"/>
+
 </LinearLayout>
