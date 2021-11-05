@@ -49,4 +49,19 @@ class NoteKotlinChannelActivity : BaseNoteActivity() {
         }
     }
 
+    fun onChannelCloseClick(view: View?){
+        val channel = Channel<Int>()
+        GlobalScope.launch(Dispatchers.Default) {
+            Log.d(TAG, "[${Thread.currentThread().name}] send start")
+            for (x in 1..5) channel.send(x * x)
+            //关闭通道
+            channel.close()
+        }
+        GlobalScope.launch(Dispatchers.Main) {
+            for (index in channel) {
+                Log.d(TAG, "[${Thread.currentThread().name}] index:$index")
+            }
+        }
+    }
+
 }

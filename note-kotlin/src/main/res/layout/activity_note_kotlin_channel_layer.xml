@@ -11,4 +11,11 @@
         android:text="send-receive"
         android:onClick="onSendReceiveClick"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="channelClose"
+        android:onClick="onChannelCloseClick"/>
+
 </LinearLayout>
