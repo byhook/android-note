@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.handy.note.ConstraintLayoutActivity;
 import com.handy.note.VerticalPageActivity;
 import com.handy.note.kotlin.NoteKotlinActivity;
 import com.handy.note.ui.ImmersiveNoteActivity;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onVerticalPagerClick(View view) {
-        VerticalPageActivity.intentStart(this);
+        ConstraintLayoutActivity.intentStart(this);
     }
 
     public void onKotlinNoteClick(View view){

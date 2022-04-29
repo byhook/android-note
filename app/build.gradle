@@ -32,7 +32,7 @@ android {
             javaList.add('src/main/java')
             javaList.add('src/main/aidl')
 
-            resList.add('src/main/res')
+            resList.add('src/main/values')
 
             java.srcDirs = javaList
             res.srcDirs = resList
@@ -41,19 +41,6 @@ android {
             manifest.srcFile 'src/main/AndroidManifest.xml'
         }
     }
-
-    //指定一种风格维度
-    flavorDimensions "default"
-    productFlavors {
-        vest {
-            //测试用的马甲包
-            dimension "default"
-            applicationId "com.tencent.wesing.vest"
-            //指定版本名称后缀
-            versionNameSuffix "-vest"
-        }
-    }
-
 }
 
 dependencies {

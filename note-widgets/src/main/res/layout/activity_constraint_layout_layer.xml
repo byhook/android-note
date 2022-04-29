@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_root_layer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btn_main_add_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onAddPlaceHolderClick"
+        android:text="添加View"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_main_remove_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onRemovePlaceHolderClick"
+        android:text="删除View"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_main_add_holder" />
+
+<!--    <androidx.constraintlayout.widget.Placeholder-->
+<!--        android:id="@+id/main_content_holder"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="120dp"-->
+<!--        app:content="@+id/main_place_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/btn_main_remove_holder"-->
+<!--        tools:ignore="MissingConstraints" />-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

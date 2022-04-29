@@ -1,8 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.handy.note.widgets">
-
-    /
     <application>
         <activity android:name="com.handy.note.VerticalPageActivity" />
+        <activity android:name="com.handy.note.ConstraintLayoutActivity" />
     </application>
 </manifest>
