@@ -1,10 +1,9 @@
 ext {
-    android = [
-            compileSdkVersion: 29,
-            buildToolsVersion: "29.0.2",
+    buildVersion = [
+            compileSdkVersion: 33,
             applicationId    : "com.handy.android.note",
-            minSdkVersion    : 16,
-            targetSdkVersion : 29,
+            minSdkVersion    : 21,
+            targetSdkVersion : 33,
             versionCode      : 1,
             versionName      : "1.0.0"
     ]
@@ -21,8 +20,8 @@ ext {
             recyclerViewVersion = "1.1.0",
             navigationVersion = "2.2.2",
             constraintlayoutVersion = "1.1.3",
-            kotlinx_coroutines_core = "1.4.3",
-            kotlinx_coroutines_android = "1.4.3"
+
+            kotlinx_coroutines_core = "1.6.4",
     ]
 
     dependencies = [
@@ -44,7 +43,7 @@ ext {
             "constraintlayout"          : "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
             "recyclerView"              : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
             "kotlinx_coroutines_core"   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_core",
-            "kotlinx_coroutines_android": "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_android"
+            "kotlinx_coroutines_android": "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_core"
     ]
 
 }

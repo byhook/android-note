@@ -2,19 +2,19 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.0"
-    dataBinding{
-        enabled = true
-    }
+    compileSdk buildVersion.compileSdkVersion
     defaultConfig {
         applicationId "com.handy.android.note"
-        minSdkVersion 24
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdk buildVersion.minSdkVersion
+        targetSdk buildVersion.targetSdkVersion
+        versionCode buildVersion.versionCode
+        versionName buildVersion.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled = true
     }
 
     buildTypes {
@@ -24,6 +24,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
     sourceSets {
         main {
             List<String> javaList = new ArrayList()
@@ -31,8 +36,7 @@ android {
             //app
             javaList.add('src/main/java')
             javaList.add('src/main/aidl')
-
-            resList.add('src/main/values')
+            resList.add('src/main/res')
 
             java.srcDirs = javaList
             res.srcDirs = resList
