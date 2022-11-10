@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.View
 import com.handy.note.base.BaseNoteActivity
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
+import java.lang.NullPointerException
 
 /**
  * date: 2021-10-27
@@ -19,7 +21,7 @@ class NoteKotlinFlowActivity : BaseNoteActivity() {
 
     companion object {
 
-        const val TAG = "NoteKotlinFlowActivity"
+        const val TAG = "NoteKotlinFlowPage"
 
         @JvmStatic
         fun intentStart(context: Context) {
@@ -105,6 +107,85 @@ class NoteKotlinFlowActivity : BaseNoteActivity() {
 
     fun onWithContextClick(view: View?) = runBlocking {
         withContextSimple().collect { value -> Log.d(TAG, "onWithContextClick collected $value") }
+    }
+
+    private fun fetchNews(): Flow<String> {
+        return callbackFlow {
+            trySend("hello")
+            awaitClose {
+                Log.e(TAG, "fetchNews close")
+            }
+        }
+    }
+
+    private fun transferNews(): Flow<String> {
+        return flow {
+            Log.d(TAG, "transferNews flow ...")
+            fetchNews()
+                .catch {
+                    Log.e(TAG, "transferNews catch ...")
+                    throw IllegalStateException("catch...")
+                }
+                .collect {
+                    Log.d(TAG, "transferNews collect $it")
+                    throw NullPointerException("xxx")
+                }
+        }
+    }
+
+    private fun flowRequestA(): Flow<String> {
+        return callbackFlow {
+            trySend("helloA")
+            Log.d(TAG,"flowRequestA invoke")
+            throw NullPointerException("flowRequestA exception")
+            awaitClose {
+
+            }
+        }
+    }
+
+    private fun flowRequestB(): Flow<String> {
+        return flow {
+            flowRequestA()
+                .catch {
+                    Log.e(TAG,"flowRequestB catch")
+                }.collect {
+                    Log.d(TAG,"flowRequestB collect")
+                    emit(it)
+                }
+        }
+    }
+
+    private fun flowRequestC(): Flow<String> {
+        return flow {
+            flowRequestB()
+                .catch {
+                    Log.e(TAG,"flowRequestC catch")
+                }.collect {
+                    Log.d(TAG,"flowRequestC collect")
+                    emit(it)
+                }
+        }
+    }
+
+    fun onWithFlowClick(view: View?) {
+        GlobalScope.launch {
+            /*transferNews()
+                .catch {
+                    Log.e(TAG,"transferNews onWithFlowClick catch ...")
+                }
+                .collect{
+                    Log.d(TAG,"transferNews onWithFlowClick collect $it")
+                }*/
+
+            flowRequestC()
+                .catch {
+                    Log.e(TAG,"onWithFlowClick flowRequestC catch")
+                }.collect {
+                    Log.d(TAG,"onWithFlowClick flowRequestC collect")
+                }
+
+        }
     }
 
 }
